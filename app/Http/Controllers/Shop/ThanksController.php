@@ -83,13 +83,19 @@ class ThanksController extends Controller
         }
 
         // 店舗ID設定
+        $shop_fax = '';
+        $shop_email = '';
         if ($request['shop_id'] !== null) {
             $shop_info = DB::table('shops')->find($request['shop_id']);
             $shops_id = $shop_info->id;
+            $shop_fax = $shop_info->fax;
+            $shop_email = $shop_info->email;
         } else {
             $temp_shops = DB::table('shops')->where('manages_id', $manages->id)->first();
             $shop_info = null;
             $shops_id = $temp_shops->id;
+            $shop_fax = $temp_shops->fax;
+            $shop_email = $temp_shops->email;
         }
 
         // 最終金額計算
@@ -261,15 +267,32 @@ class ThanksController extends Controller
         } catch (\Throwable $th) {
             report($th);
         }
+
         // 店舗様
         try {
             Mail::to($manages->email)->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
         } catch (\Throwable $th) {
             report($th);
         }
+        if ($shop_email != null && $shop_email != '') {
+            try {
+                Mail::to($shop_email)->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
+            } catch (\Throwable $th) {
+                report($th);
+            }
+        }
+
         // FAX
         if ($manages->fax != null && $manages->fax != '') {
             $tofax = str_replace('-', '', $manages->fax);
+            try {
+                Mail::to('fax843780@ecofax.jp')->send(new OrderFax($tofax, $manages, $user, $shop_info, $service, $data));
+            } catch (\Throwable $th) {
+                report($th);
+            }
+        }
+        if ($shop_fax != null && $shop_fax != '') {
+            $tofax = str_replace('-', '', $shop_fax);
             try {
                 Mail::to('fax843780@ecofax.jp')->send(new OrderFax($tofax, $manages, $user, $shop_info, $service, $data));
             } catch (\Throwable $th) {
