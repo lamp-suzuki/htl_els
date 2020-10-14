@@ -45,6 +45,10 @@ class HomeController extends Controller
         $categories = DB::table('categories')->where('manages_id', $manages->id)->orderBy('sort_id', 'asc')->get();
         $posts = DB::table('posts')->where('manages_id', $manages->id)->first();
 
+        session()->put('receipt.service', 'delivery');
+        session()->put('receipt.shop_id', $shops[0]->id);
+        session()->put('receipt.shop_name', $shops[0]->name);
+
         $options = [];
         $products = [];
         foreach ($categories as $key => $cat) {

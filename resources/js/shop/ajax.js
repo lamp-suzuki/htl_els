@@ -69,6 +69,9 @@ $("#changeReceive").on("change", function() {
 });
 
 // 店舗選択
+$('#FirstSelect').on('show.bs.modal', function (e) {
+  getBusinessTime($("#deliveryDate").val());
+});
 $("#deliveryShop, #changeDeliveryShop").on("change", function() {
   setSelectShop($(this).val());
 });

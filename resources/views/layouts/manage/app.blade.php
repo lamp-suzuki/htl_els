@@ -90,7 +90,7 @@
               </a>
             </li>
           </ul>
-          <div class="foot">
+          {{-- <div class="foot">
             <a href="{{ route('manage.setting.transaction.index') }}">
               <i class="d-inline-block align-middle" data-feather="triangle"></i>
               <span class="d-inline-block align-middle">運営者情報に関する設定</span>
@@ -103,7 +103,7 @@
               <i class="d-inline-block align-middle" data-feather="triangle"></i>
               <span class="d-inline-block align-middle">無料ご相談会</span>
             </a>
-          </div>
+          </div> --}}
         </div>
       </nav>
       <!-- #sidebarMenu -->

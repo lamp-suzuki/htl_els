@@ -60,7 +60,7 @@
       <span class="d-block">閉じる</span>
     </div>
     <div class="spmenu-conainer">
-      <div class="spmenu-login">
+      {{-- <div class="spmenu-login">
         @if (Auth::check())
         <div class="spmenu-login-inner">
           <p class="mb-0">ようこそ、
@@ -82,9 +82,9 @@
           </p>
         </div>
         @endif
-      </div>
+      </div> --}}
       <ul class="spmenu-links">
-        <li>
+        {{-- <li>
           <a href="{{ route('member.index') }}">
             <i data-feather="credit-card" class="d-inline-block align-middle text-primary mr-2"></i>
             <span class="d-inline-block align-middle text-body">会員情報の確認・編集</span>
@@ -95,7 +95,7 @@
             <i data-feather="list" class="d-inline-block align-middle text-primary mr-2"></i>
             <span class="d-inline-block align-middle text-body">注文履歴</span>
           </a>
-        </li>
+        </li> --}}
         <li>
           <a href="{{ route('shop.news') }}">
             <i data-feather="info" class="d-inline-block align-middle text-primary mr-2"></i>

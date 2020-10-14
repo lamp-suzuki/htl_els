@@ -2,9 +2,5 @@
     "/js/manage/app.js": "/js/manage/app.js",
     "/css/manage/app.css": "/css/manage/app.css",
     "/css/shop/app.css": "/css/shop/app.css",
-    "/js/manage/app.js.map": "/js/manage/app.js.map",
-    "/css/manage/app.css.map": "/css/manage/app.css.map",
-    "/css/shop/app.css.map": "/css/shop/app.css.map",
-    "/js/shop/app.js": "/js/shop/app.js",
-    "/js/shop/app.js.map": "/js/shop/app.js.map"
+    "/js/shop/app.js": "/js/shop/app.js"
 }

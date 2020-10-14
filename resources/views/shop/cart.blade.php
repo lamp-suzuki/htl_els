@@ -83,27 +83,26 @@
         <div class="form-group">
           <label for="changeReceive" class="small d-block">お受け取り方法</label>
           <select id="changeReceive" class="form-control js-vali" name="changeReceive">
-            {{-- <option value="takeout" @if(session('receipt.service')==='takeout') selected @endif>お持ち帰り(テイクアウト)</option> --}}
             <option value="delivery">デリバリー(配達)</option>
           </select>
         </div>
         <div class="form-group">
           <label for="changeDeliveryDate" class="small d-block">お受け取り日時</label>
-          <select id="deliveryDate" class="form-control js-vali" name="delivery_date">
+          <select id="deliveryDate" class="form-control" name="delivery_date">
             @for ($i = 0; $i <= 6; $i++)
             <option value="{{ date('Y-m-d', strtotime('+'.$i.' day')) }}" @if(session('receipt.date')===date('Y-m-d', strtotime('+'.$i.' day'))) selected @endif>{{ date('Y年n月j日', strtotime('+'.$i.' day')) }}@if($i == 0)（本日）@elseif($i == 1)（明日）@endif</option>
             @endfor
           </select>
         </div>
         <div class="form-group">
-          <select id="changedeliveryTime" class="form-control js-vali" name="delivery_time">
+          <select id="changedeliveryTime" class="form-control" name="delivery_time">
             <option value="{{ session('receipt.time') }}">{{ session('receipt.time') }}</option>
           </select>
         </div>
         @if(session('receipt.service')==='takeout')
         <div class="form-group">
           <label for="changeDeliveryDate" class="small d-block">お受け取り店舗</label>
-          <select id="changeDeliveryShop" class="form-control js-vali" name="delivery_shop">
+          <select id="changeDeliveryShop" class="form-control" name="delivery_shop">
             <option>店舗を選択</option>
             @foreach ($shops as $shop)
             <option value="{{ $shop->id }}:{{ $shop->name }}"@if(session('receipt.shop_id') !== null && session('receipt.shop_id') == $shop->id) selected @endif>{{ $shop->name }}</option>

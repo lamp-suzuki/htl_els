@@ -221,7 +221,7 @@ if (session('receipt.service') == 'takeout') {
   <a class="btn btn-primary rounded-pill" href="{{ route('shop.cart') }}">次へ進む</a>
 </div>
 
-@if (!session()->has('receipt'))
+@if (!session()->has('receipt.date'))
 <!-- FirstSelect -->
 <div class="modal fsmodal catalog-modal fade" id="FirstSelect" tabindex="-1" aria-labelledby="FirstSelectLabel"
   aria-hidden="true">
@@ -230,7 +230,7 @@ if (session('receipt.service') == 'takeout') {
       <div class="modal-body">
         <div class="tab-content">
           <input type="hidden" name="service" id="set-service" value="">
-          <div id="step1" class="tab-pane fade show active">
+          {{-- <div id="step1" class="tab-pane fade show active">
             <h3>
               <span>STEP1</span>
               <span>お受け取り方法を選択</span>
@@ -320,10 +320,10 @@ if (session('receipt.service') == 'takeout') {
               </div>
             </button>
             @endif
-          </div>
-          <div id="step2" class="tab-pane fade">
+          </div> --}}
+          {{-- <div id="step2" class="tab-pane fade show active">
             <h3>
-              <span>STEP2</span>
+              <span>STEP1</span>
               <span>お受け取り場所を選択</span>
             </h3>
             <div class="form-group">
@@ -340,10 +340,10 @@ if (session('receipt.service') == 'takeout') {
               </button>
               <button class="btn btn-primary rounded-pill" type="button" name="next">次へ進む</button>
             </div>
-          </div>
-          <div id="step3" class="tab-pane fade">
+          </div> --}}
+          <div id="step3" class="tab-pane fade show active">
             <h3>
-              <span>STEP3</span>
+              {{-- <span>STEP2</span> --}}
               <span>お受け取り日時を選択</span>
             </h3>
             <div class="form-group">
@@ -367,15 +367,15 @@ if (session('receipt.service') == 'takeout') {
             </div>
           </div>
         </div>
-        <div id="first-progress" class="progress">
-          <span class="steps">1/3</span>
+        {{-- <div id="first-progress" class="progress">
+          <span class="steps">1/2</span>
           <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0"
             aria-valuemax="100"></div>
-        </div>
+        </div> --}}
       </div>
-      <div class="modal-footer" data-dismiss="modal" aria-label="Close">
+      {{-- <div class="modal-footer" data-dismiss="modal" aria-label="Close">
         <p class="modal-close" data-dismiss="modal" aria-label="Close">まずはメニューをみる</p>
-      </div>
+      </div> --}}
     </div>
   </div>
 </div>
@@ -389,7 +389,7 @@ if (session('receipt.service') == 'takeout') {
       @csrf
       <div class="modal-body rounded-bottom">
         <h3 class="text-center">お受け取り情報の変更</h3>
-        <div class="form-group">
+        <div class="form-group d-none">
           <label for="changeReceive" class="font-weight-bold">お受け取り方法</label>
           <select id="changeReceive" class="form-control" name="service">
             <option value="takeout"@if(session('receipt.service') == 'takeout') selected @endif>お持ち帰り(テイクアウト)</option>
@@ -397,7 +397,7 @@ if (session('receipt.service') == 'takeout') {
             <option value="ec"@if(session('receipt.service') == 'ec') selected @endif>お取り寄せ</option>
           </select>
         </div>
-        <div class="form-group mt-3">
+        <div class="form-group mt-3 d-none">
           <select id="changeDeliveryShop" class="form-control" name="delivery_shop">
             <option>店舗を選択</option>
             @foreach ($shops as $shop)
@@ -418,7 +418,7 @@ if (session('receipt.service') == 'takeout') {
           </select>
         </div>
         <small id="changeDateVali" class="form-text text-danger" style="display: none">有効な日時をご選択ください</small>
-        <p class="text-danger small mt-3">※日時や場所の変更で購入可能な商品が変わる可能性がございます。</p>
+        {{-- <p class="text-danger small mt-3">※日時や場所の変更で購入可能な商品が変わる可能性がございます。</p> --}}
         <div class="text-center mt-4">
           <button id="changeReceiptBtn" class="btn btn-primary rounded-pill" type="submit">更新する</button>
         </div>

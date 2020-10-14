@@ -61,7 +61,7 @@
         <span class="d-block container">合計金額</span>
       </h3>
       <div class="container">
-        <table class="w-100 table table-borderless">
+        <table class="w-100 table table-borderless mb-0">
           <tbody>
             <tr>
               <th>商品小計</th>

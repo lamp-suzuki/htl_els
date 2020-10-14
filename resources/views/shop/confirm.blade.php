@@ -104,7 +104,11 @@
       </h3>
       <div class="container">
         <div class="form-group mb-0">
+          @if (session('form_cart.other_content') == null || session('form_cart.other_content') == '')
+          <p class="mb-0">なし</p>
+          @else
           <p class="mb-0">{!! nl2br(e(session('form_cart.other_content'))) !!}</p>
+          @endif
           <input type="hidden" name="other_content" value="{{ session('form_cart.other_content') }}">
         </div>
       </div>

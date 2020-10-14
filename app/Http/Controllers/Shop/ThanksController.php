@@ -185,6 +185,11 @@ class ThanksController extends Controller
             'address2' => $request['address2'],
 
             'charge_id' => isset($charge) ? $charge->id : null,
+
+            'receipt' => $request['set_receipt'],
+            'receipt_name' => $request['receipt_name'] != null ? $request['receipt_name'] : null,
+            'other_content' => $request['other_content'],
+
             'created_at' => now(),
             'updated_at' => now(),
         ]);
