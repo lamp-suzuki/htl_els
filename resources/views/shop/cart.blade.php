@@ -83,8 +83,8 @@
         <div class="form-group">
           <label for="changeReceive" class="small d-block">お受け取り方法</label>
           <select id="changeReceive" class="form-control js-vali" name="changeReceive">
-            <option value="takeout" @if(session('receipt.service')==='takeout') selected @endif>お持ち帰り(テイクアウト)</option>
-            <option value="delivery" @if(session('receipt.service')==='delivery') selected @endif>デリバリー(配達)</option>
+            {{-- <option value="takeout" @if(session('receipt.service')==='takeout') selected @endif>お持ち帰り(テイクアウト)</option> --}}
+            <option value="delivery">デリバリー(配達)</option>
           </select>
         </div>
         <div class="form-group">
@@ -123,7 +123,7 @@
           aria-controls="content-okimochi">
           <span class="d-block container">
             <i data-feather="heart" class="text-primary d-inline-block align-middle mr-2"></i>
-            <span class="d-inline-block align-middle">「TakeCafe」に応援金を送る</span>
+            <span class="d-inline-block align-middle">「{{ $manages->name }}」に応援金を送る</span>
             <i data-feather="plus-circle" class="position-absolute"></i>
           </span>
         </div>
@@ -185,7 +185,7 @@
       <div class="container">
         <div class="d-flex justify-content-center form-btns">
           <a class="btn btn-lg bg-white btn-back mr-2" href="{{ route('shop.home') }}">戻る</a>
-          <button class="btn btn-lg btn-primary" type="button" data-toggle="modal" data-target="#signup"@if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')))disabled @endif>注文へ進む</button>
+          <button id="submitbtn" class="btn btn-lg btn-primary" type="button" @if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')))disabled @endif>注文へ進む</button>
           {{-- <button class="btn btn-lg btn-primary" type="submit">注文へ進む</button> --}}
         </div>
       </div>
@@ -199,7 +199,7 @@
 </form>
 
 <!-- modal -->
-<div class="modal catalog-modal fsmodal fade" id="signup" tabindex="-1" aria-hidden="true" style="max-width:100%">
+{{-- <div class="modal catalog-modal fsmodal fade" id="signup" tabindex="-1" aria-hidden="true" style="max-width:100%">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body rounded-bottom">
@@ -219,9 +219,6 @@
         </div>
         <div class="mt-4 text-center">
           <button class="btn btn-dark px-5" type="submit" id="width-login">ログインする</button>
-          <p class="small text-center mt-3 mb-0">
-            {{-- <a class="text-muted" href="">パスワードをお忘れの方はこちら</a> --}}
-          </p>
         </div>
       </div>
       <div class="modal-footer">
@@ -229,7 +226,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 <!-- .modal -->
 
 <script language="javascript" type="text/javascript">

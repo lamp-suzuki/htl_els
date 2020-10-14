@@ -67,125 +67,39 @@
         </div>
         <!-- .form-group -->
         <div class="form-group">
+          <label class="small d-block form-must" for="room_id">お部屋番号</label>
+          <input type="text" name="room_id" id="room_id" class="form-control" required>
+        </div>
+        <!-- .form-group -->
+        <div class="form-group">
           <label class="small d-block form-must" for="">電話番号</label>
           @if (isset($users->tel))
-          <input type="tel" class="form-control" name="tel" value="{{ $users->tel }}" placeholder="000-0000-0000" />
+          <input type="tel" class="form-control" name="tel" value="{{ $users->tel }}" placeholder="000-0000-0000" required />
           @else
-          <input type="tel" class="form-control" name="tel" value="{{ session('form_order.tel') }}" placeholder="000-0000-0000" />
+          <input type="tel" class="form-control" name="tel" value="{{ session('form_order.tel') }}" placeholder="000-0000-0000" required />
           @endif
         </div>
         <!-- .form-group -->
         <div class="form-group">
           <label class="small d-block form-must" for="">メールアドレス</label>
           @if (isset($users->email))
-          <input type="email" class="form-control" name="email" value="{{ $users->email }}" placeholder="" />
+          <input type="email" class="form-control" name="email" value="{{ $users->email }}" placeholder="" required />
           @else
-          <input type="email" class="form-control" name="email" value="{{ session('form_order.email') }}" placeholder="" />
+          <input type="email" class="form-control" name="email" value="{{ session('form_order.email') }}" placeholder="" required />
           @endif
         </div>
         <!-- .form-group -->
         <div class="form-group">
           <label class="small d-block form-must" for="">メールアドレス（確認）</label>
-          <input type="email" class="form-control" name="email_confirmation" value="" placeholder="" />
+          <input type="email" class="form-control" name="email_confirmation" value="" placeholder="" required />
         </div>
         <!-- .form-group -->
       </div>
-      @if(session('receipt.service') != 'takeout')
-      <div class="mt-4 container">
-        <h3 class="form-ttl">お届け先情報</h3>
-        <div class="form-group">
-          <label class="small d-block form-must" for="">郵便番号</label>
-          <div class="input-group w-50">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-zipcode">〒</span>
-            </div>
-            @if (isset($users->zipcode))
-            <input type="text" maxlength="8" class="form-control" id="zipcode" name="zipcode" value="{{ $users->zipcode }}" placeholder="000-0000" aria-describedby="basic-zipcode" />
-            @else
-            <input type="text" maxlength="8" class="form-control" id="zipcode" name="zipcode" value="{{ session('form_order.zipcode') }}" placeholder="000-0000" aria-describedby="basic-zipcode" />
-            @endif
-          </div>
-        </div>
-        <!-- .form-group -->
-        <div class="form-group">
-          <label class="small d-block form-must" for="pref">都道府県</label>
-          <select name="pref" class="form-control w-auto" id="pref" name="pref" required>
-            <option value="">---</option>
-            <option value="北海道"@if(session('form_order.pref')=='北海道' || (isset($users->pref)&&$users->pref=='北海道')) selected @endif>北海道</option>
-            <option value="青森県"@if(session('form_order.pref')=='青森県' || (isset($users->pref)&&$users->pref=='青森県')) selected @endif>青森県</option>
-            <option value="岩手県"@if(session('form_order.pref')=='岩手県' || (isset($users->pref)&&$users->pref=='岩手県')) selected @endif>岩手県</option>
-            <option value="宮城県"@if(session('form_order.pref')=='宮城県' || (isset($users->pref)&&$users->pref=='宮城県')) selected @endif>宮城県</option>
-            <option value="秋田県"@if(session('form_order.pref')=='秋田県' || (isset($users->pref)&&$users->pref=='秋田県')) selected @endif>秋田県</option>
-            <option value="山形県"@if(session('form_order.pref')=='山形県' || (isset($users->pref)&&$users->pref=='山形県')) selected @endif>山形県</option>
-            <option value="福島県"@if(session('form_order.pref')=='福島県' || (isset($users->pref)&&$users->pref=='福島県')) selected @endif>福島県</option>
-            <option value="茨城県"@if(session('form_order.pref')=='茨城県' || (isset($users->pref)&&$users->pref=='茨城県')) selected @endif>茨城県</option>
-            <option value="栃木県"@if(session('form_order.pref')=='栃木県' || (isset($users->pref)&&$users->pref=='栃木県')) selected @endif>栃木県</option>
-            <option value="群馬県"@if(session('form_order.pref')=='群馬県' || (isset($users->pref)&&$users->pref=='群馬県')) selected @endif>群馬県</option>
-            <option value="埼玉県"@if(session('form_order.pref')=='埼玉県' || (isset($users->pref)&&$users->pref=='埼玉県')) selected @endif>埼玉県</option>
-            <option value="千葉県"@if(session('form_order.pref')=='千葉県' || (isset($users->pref)&&$users->pref=='千葉県')) selected @endif>千葉県</option>
-            <option value="東京都"@if(session('form_order.pref')=='東京都' || (isset($users->pref)&&$users->pref=='東京都')) selected @endif>東京都</option>
-            <option value="神奈川県"@if(session('form_order.pref')=='神奈川県' || (isset($users->pref)&&$users->pref=='神奈川県')) selected @endif>神奈川県</option>
-            <option value="新潟県"@if(session('form_order.pref')=='新潟県' || (isset($users->pref)&&$users->pref=='新潟県')) selected @endif>新潟県</option>
-            <option value="富山県"@if(session('form_order.pref')=='富山県' || (isset($users->pref)&&$users->pref=='富山県')) selected @endif>富山県</option>
-            <option value="石川県"@if(session('form_order.pref')=='石川県' || (isset($users->pref)&&$users->pref=='石川県')) selected @endif>石川県</option>
-            <option value="福井県"@if(session('form_order.pref')=='福井県' || (isset($users->pref)&&$users->pref=='福井県')) selected @endif>福井県</option>
-            <option value="山梨県"@if(session('form_order.pref')=='山梨県' || (isset($users->pref)&&$users->pref=='山梨県')) selected @endif>山梨県</option>
-            <option value="長野県"@if(session('form_order.pref')=='長野県' || (isset($users->pref)&&$users->pref=='長野県')) selected @endif>長野県</option>
-            <option value="岐阜県"@if(session('form_order.pref')=='岐阜県' || (isset($users->pref)&&$users->pref=='岐阜県')) selected @endif>岐阜県</option>
-            <option value="静岡県"@if(session('form_order.pref')=='静岡県' || (isset($users->pref)&&$users->pref=='静岡県')) selected @endif>静岡県</option>
-            <option value="愛知県"@if(session('form_order.pref')=='愛知県' || (isset($users->pref)&&$users->pref=='愛知県')) selected @endif>愛知県</option>
-            <option value="三重県"@if(session('form_order.pref')=='三重県' || (isset($users->pref)&&$users->pref=='三重県')) selected @endif>三重県</option>
-            <option value="滋賀県"@if(session('form_order.pref')=='滋賀県' || (isset($users->pref)&&$users->pref=='滋賀県')) selected @endif>滋賀県</option>
-            <option value="京都府"@if(session('form_order.pref')=='京都府' || (isset($users->pref)&&$users->pref=='京都府')) selected @endif>京都府</option>
-            <option value="大阪府"@if(session('form_order.pref')=='大阪府' || (isset($users->pref)&&$users->pref=='大阪府')) selected @endif>大阪府</option>
-            <option value="兵庫県"@if(session('form_order.pref')=='兵庫県' || (isset($users->pref)&&$users->pref=='兵庫県')) selected @endif>兵庫県</option>
-            <option value="奈良県"@if(session('form_order.pref')=='奈良県' || (isset($users->pref)&&$users->pref=='奈良県')) selected @endif>奈良県</option>
-            <option value="和歌山県"@if(session('form_order.pref')=='和歌山県' || (isset($users->pref)&&$users->pref=='和歌山県')) selected @endif>和歌山県</option>
-            <option value="鳥取県"@if(session('form_order.pref')=='鳥取県' || (isset($users->pref)&&$users->pref=='鳥取県')) selected @endif>鳥取県</option>
-            <option value="島根県"@if(session('form_order.pref')=='島根県' || (isset($users->pref)&&$users->pref=='島根県')) selected @endif>島根県</option>
-            <option value="岡山県"@if(session('form_order.pref')=='岡山県' || (isset($users->pref)&&$users->pref=='岡山県')) selected @endif>岡山県</option>
-            <option value="広島県"@if(session('form_order.pref')=='広島県' || (isset($users->pref)&&$users->pref=='広島県')) selected @endif>広島県</option>
-            <option value="山口県"@if(session('form_order.pref')=='山口県' || (isset($users->pref)&&$users->pref=='山口県')) selected @endif>山口県</option>
-            <option value="徳島県"@if(session('form_order.pref')=='徳島県' || (isset($users->pref)&&$users->pref=='徳島県')) selected @endif>徳島県</option>
-            <option value="香川県"@if(session('form_order.pref')=='香川県' || (isset($users->pref)&&$users->pref=='香川県')) selected @endif>香川県</option>
-            <option value="愛媛県"@if(session('form_order.pref')=='愛媛県' || (isset($users->pref)&&$users->pref=='愛媛県')) selected @endif>愛媛県</option>
-            <option value="高知県"@if(session('form_order.pref')=='高知県' || (isset($users->pref)&&$users->pref=='高知県')) selected @endif>高知県</option>
-            <option value="福岡県"@if(session('form_order.pref')=='福岡県' || (isset($users->pref)&&$users->pref=='福岡県')) selected @endif>福岡県</option>
-            <option value="佐賀県"@if(session('form_order.pref')=='佐賀県' || (isset($users->pref)&&$users->pref=='佐賀県')) selected @endif>佐賀県</option>
-            <option value="長崎県"@if(session('form_order.pref')=='長崎県' || (isset($users->pref)&&$users->pref=='長崎県')) selected @endif>長崎県</option>
-            <option value="熊本県"@if(session('form_order.pref')=='熊本県' || (isset($users->pref)&&$users->pref=='熊本県')) selected @endif>熊本県</option>
-            <option value="大分県"@if(session('form_order.pref')=='大分県' || (isset($users->pref)&&$users->pref=='大分県')) selected @endif>大分県</option>
-            <option value="宮崎県"@if(session('form_order.pref')=='宮崎県' || (isset($users->pref)&&$users->pref=='宮崎県')) selected @endif>宮崎県</option>
-            <option value="鹿児島県"@if(session('form_order.pref')=='鹿児島県' || (isset($users->pref)&&$users->pref=='鹿児島県')) selected @endif>鹿児島県</option>
-            <option value="沖縄県"@if(session('form_order.pref')=='沖縄県' || (isset($users->pref)&&$users->pref=='沖縄県')) selected @endif>沖縄県</option>
-          </select>
-        </div>
-        <!-- .form-group -->
-        <div class="form-group">
-          <label class="small d-block form-must" for="address1">市区町村</label>
-          @if (isset($users->address1))
-          <input type="text" class="form-control" id="address1" name="address1" value="{{ $users->address1 }}" />
-          @else
-          <input type="text" class="form-control" id="address1" name="address1" value="{{ session('form_order.address1') }}" />
-          @endif
-        </div>
-        <!-- .form-group -->
-        <div class="form-group mb-0">
-          <label class="small d-block form-must" for="address2">番地 建物名</label>
-          @if (isset($users->address2))
-          <input type="text" class="form-control" id="address2" name="address2" value="{{ $users->address2 }}" />
-          @else
-          <input type="text" class="form-control" id="address2" name="address2" value="{{ session('form_order.address2') }}" />
-          @endif
-        </div>
-        <!-- .form-group -->
-      </div>
-      @endif
     </div>
   </div>
   <div>
     @if (!isset($users))
-    <div class="pt-4 pt-md-0 pb-4">
+    {{-- <div class="pt-4 pt-md-0 pb-4">
       <h3 class="ttl-horizon">
         <span class="d-block container">会員について</span>
       </h3>
@@ -207,7 +121,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> --}}
     @endif
     <div class="py-4 bg-light">
       <div class="container">

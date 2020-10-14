@@ -52,7 +52,7 @@
             <p class="mb-0">{{ $receipt['date'] }} {{ $receipt['time'] }}</p>
             <input type="hidden" name="delivery_time" value="{{ $receipt['date'] }} {{ $receipt['time'] }}">
           </div>
-          @if (session('receipt.service') != 'ec')
+          @if (session('receipt.service') == 'takeout')
           <div class="form-group">
             <label class="small d-block" for="">ご注文店舗</label>
             <p class="mb-0">{{ $shop->name }}</p>
@@ -73,6 +73,11 @@
             <input type="hidden" name="furigana" value="{{ $form_order['furi1'] }} {{ $form_order['furi2'] }}">
           </div>
           <div class="form-group">
+            <label class="small d-block" for="">お部屋番号</label>
+            <p class="mb-0">{{ $form_order['room_id'] }}</p>
+            <input type="hidden" name="room_id" value="{{ $form_order['room_id'] }}">
+          </div>
+          <div class="form-group">
             <label class="small d-block" for="">電話番号</label>
             <p class="mb-0">{{ $form_order['tel'] }}</p>
             <input type="hidden" name="tel" value="{{ $form_order['tel'] }}">
@@ -83,24 +88,6 @@
             <input type="hidden" name="email" value="{{ $form_order['email'] }}">
           </div>
         </div>
-        @if(session('receipt.service') != 'takeout')
-        <div class="mb-4">
-          <h3 class="form-ttl">お届け先情報</h3>
-          <div class="form-group mb-0">
-            <p class="mb-0">
-              〒{{ $form_order['zipcode'] }}
-              <br />
-              {{ $form_order['pref'] }} {{ $form_order['address1'] }}
-              <br />
-              {{ $form_order['address2'] }}
-            </p>
-            <input type="hidden" name="zipcode" value="{{ $form_order['zipcode'] }}">
-            <input type="hidden" name="pref" value="{{ $form_order['pref'] }}">
-            <input type="hidden" name="address1" value="{{ $form_order['address1'] }}">
-            <input type="hidden" name="address2" value="{{ $form_order['address2'] }}">
-          </div>
-        </div>
-        @endif
         <div class="">
           <h3 class="form-ttl">お支払い方法</h3>
           @if ($payment['pay'] == 1)
@@ -129,11 +116,12 @@
       <div class="container">
         <div class="form-group mb-0">
           <p class="mb-0">@if (session('form_payment.set-receipt') == 1)
-            <span>あり</span>
+            <span>あり：{{ session('form_payment.receipt_name') }}</span>
             @else
             <span>なし</span>
             @endif</p>
-          <input type="hidden" name="set_receipt" value="{{ session('form_payment.set-receipt') }}">
+            <input type="hidden" name="set_receipt" value="{{ session('form_payment.set-receipt') }}">
+            <input type="hidden" name="receipt_name" value="{{ session('form_payment.receipt_name') }}">
         </div>
       </div>
     </div>

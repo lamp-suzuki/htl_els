@@ -123,7 +123,7 @@ $weeks = [
           </div>
         </div>
       </div>
-      {{-- <div class="form-group">
+      <div class="form-group d-none">
         <label for="">キャンセルについて</label>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="cancelDelivery" value="0" id="cancelDeliveryFalse"
@@ -135,7 +135,7 @@ $weeks = [
             @if($manage->delivery_cancel == 1)checked @endif />
           <label class="form-check-label text-body" for="cancelDeliveryTrue">受け付ける</label>
         </div>
-      </div> --}}
+      </div>
       <div class="form-group">
         <label for="delivery_preparation">
           ご注文受け付け時間

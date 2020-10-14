@@ -160,9 +160,9 @@
         </div>
         <div class="d-flex justify-content-start flex-wrap mt-3">
           <a class="text-white small mr-3 mb-2" href="{{ route('shop.privacy') }}">プライバシーポリシー</a>
-          <a class="text-white small mr-3 mb-2" href="{{ route('shop.law') }}">特定商取引法に基づく表記</a>
-          <a class="text-white small mr-3 mb-2" href="https://system.take-eats.jp" target="_blank">このシステムについて</a>
-          <a class="text-white small mr-3 mb-2" href="https://lamp.jp" target="_blank">運営会社</a>
+          {{-- <a class="text-white small mr-3 mb-2" href="{{ route('shop.law') }}">特定商取引法に基づく表記</a> --}}
+          <a class="text-white small mr-3 mb-2" href="http://gouroom.lino-a.com/law/" target="_blank">特定商取引法に基づく表記</a>
+          <a class="text-white small mr-3 mb-2" href="http://gouroom.lino-a.com/" target="_blank">このシステムについて</a>
         </div>
       </div>
     </div>

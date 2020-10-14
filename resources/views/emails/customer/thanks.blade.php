@@ -13,6 +13,7 @@
 
 [注文者様名] {{ $user['name'] }} 様
 [注文者様名（フリガナ）] {{ $user['furigana'] }}
+[お部屋番号] {{ $user['room_id'] }}
 [メールアドレス] {{ $user['email'] }}
 [お電話番号] {{ $user['tel'] }}
 [お支払方法] {{ $user['payment'] }}
@@ -24,6 +25,8 @@
 
 @foreach ($data['carts'] as $c)
 {{ $c['name'] }}
+オプション：@foreach ($c['options'] as $opt){{ $opt[0].' ' }}@endforeach
+
 単価：{{ number_format($c['price']) }}
 数量：{{ number_format($c['quantity']) }}
 小計：{{ number_format($c['amount']) }}円(税込)
@@ -46,7 +49,7 @@
 @endif
 [合計金額]：{{ number_format($data['total_amount']) }}円
 -----------------------------------------------------
-[領収書]：{{ $user['receipt'] }}
+[領収書]：{{ $user['receipt'] }} {{ $user['receipt_name'] }}
 
 ★ご注意下さい★
 ■ 受注後に品切れのご連絡をさせていただく場合がございます。ご了承ください。

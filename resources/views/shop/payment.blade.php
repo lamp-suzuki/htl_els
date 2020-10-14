@@ -29,11 +29,7 @@
         <div class="form-group mb-0">
           <label class="small d-block form-must" for="">お支払い方法(選択)</label>
           <select class="form-control" id="pay" name="pay">
-            <option value="">選択してください</option>
-            <option value="0"@if(session('form_payment.pay')==='0') selected @endif>クレジットカード決済</option>
-            @if (session('receipt.service') == 'takeout')
-            <option value="1"@if(session('form_payment.pay')==='1') selected @endif>店舗でお支払い</option>
-            @endif
+            <option value="0">クレジットカード決済</option>
           </select>
           {{-- テスト --}}
           <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
@@ -42,28 +38,6 @@
           {{-- <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
             data-key="pk_live_0b8df682f4f36a822c731300" data-submit-text="適用して閉じる" data-partial="true"></script> --}}
         </div>
-        <!-- .form-group -->
-        @if ($point_flag)
-        <div class="form-group mb-0 mt-3">
-          <label class="small d-block" for="">ポイントを使用する</label>
-          <div class="input-group">
-            <input type="number" min="0" max="{{ $points }}" value="0" name="use_points" class="form-control" aria-describedby="basic-pt" />
-            <div class="input-group-append">
-              <span class="input-group-text" id="basic-pt">pt</span>
-            </div>
-          </div>
-          <small id="" class="form-text d-block mt-1 text-right">
-            保有ポイント
-            <span id="have-pt" class="ml-2">{{ $points }}</span>
-            pt
-          </small>
-        </div>
-        @endif
-        {{-- <div class="form-group mb-0">
-          <label class="small d-block" for="">クーポンのご利用</label>
-          <input type="text" name="coupon" class="form-control" id="coupon" />
-          <small id="couponSuccess" class="form-text mt-1 text-primary" style="display: none">現在ご利用いただけないクーポンです。</small>
-        </div> --}}
       </div>
     </div>
     <div class="py-4">
@@ -72,8 +46,11 @@
       </h3>
       <div class="container">
         <div class="form-group form-check mb-0">
-          <input type="checkbox" class="form-check-input" id="receipt" name="set-receipt" value="1" />
+          <input type="checkbox" class="form-check-input" id="receipt" name="set-receipt" value="1" data-toggle="collapse" data-target="#collapse_receipt_name" aria-expanded="false" aria-controls="collapseExample" />
           <label class="form-check-label" for="receipt">領収書をつける</label>
+        </div>
+        <div class="collapse mt-3" id="collapse_receipt_name">
+          <input type="text" name="receipt_name" id="receipt_name" class="form-control form-control-sm" placeholder="領収書の宛名">
         </div>
       </div>
     </div>

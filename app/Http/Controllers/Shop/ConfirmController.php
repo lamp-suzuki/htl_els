@@ -41,7 +41,11 @@ class ConfirmController extends Controller
         }
 
         $receipt = session('receipt'); // 受け取り設定
-        $shop = DB::table('shops')->where('id', $receipt['shop_id'])->first(); // 店舗情報
+        if (session('receipt.service') == 'takeout') {
+            $shop = DB::table('shops')->where('id', $receipt['shop_id'])->first(); // 店舗情報
+        } else {
+            $shop = null; // 店舗情報
+        }
         $cart = session('cart'); // カート情報
         $form_order = session('form_order'); // お客様情報
         $payment = $request->all(); // 支払い情報

@@ -205,6 +205,7 @@ class ThanksController extends Controller
         $user = [
             'name' => $request['name'],
             'furigana' => $request['furigana'],
+            'room_id' => $request['room_id'],
             'tel' => $request['tel'],
             'email' => $request['email'],
             'zipcode' => $request['zipcode'],
@@ -213,6 +214,7 @@ class ThanksController extends Controller
             'address2' => $request['address2'],
             'payment' => $request['payment_method'] == 0 ? 'クレジットカード決済' : '店舗でお支払い',
             'receipt' => $request['set_receipt'] == 0 ? 'なし' : 'あり',
+            'receipt_name' => $request['receipt_name'] != null ? $request['receipt_name'] : '',
             'other' => session('form_cart.other_content') != null ? session('form_cart.other_content') : 'なし',
             'okimochi' => session('form_cart.okimochi'),
             'use_points' => $use_points,
