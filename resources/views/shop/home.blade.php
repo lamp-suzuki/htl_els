@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if (session()->has('receipt'))
+@if (session()->has('receipt.date'))
 @php
 if (session('receipt.service') == 'takeout') {
     $service = 'お持ち帰り';
@@ -14,14 +14,8 @@ if (session('receipt.service') == 'takeout') {
 @endphp
 <div id="changeDateBtn" data-toggle="modal" data-target="#ChangeDate">
   <div class="container">
-    @if (session('receipt.service') !== null)
-    <span class="deli">{{ $service }}</span>
-    @endif
     @if (session('receipt.date') !== null)
     <span class="date">{{ date('n月j日', strtotime(session('receipt.date'))).' '.session('receipt.time') }}</span>
-    @endif
-    @if (session('receipt.shop_name') !== null)
-    <span class="shop">{{ session('receipt.shop_name') }}</span>
     @endif
     <div class="link">変更</div>
   </div>
@@ -349,6 +343,11 @@ if (session('receipt.service') == 'takeout') {
             <div class="form-group">
               <select id="deliveryDate" class="form-control" name="delivery_date">
                 @for ($i = 0; $i <= 6; $i++)
+                @php
+                if ($manages->delivery_preparation >= (60*24) && $i == 0) {
+                    continue;
+                }
+                @endphp
                 <option value="{{ date('Y-m-d', strtotime('+'.$i.' day')) }}">{{ date('Y年n月j日', strtotime('+'.$i.' day')) }}@if($i == 0)（本日）@elseif($i == 1)（明日）@endif</option>
                 @endfor
               </select>

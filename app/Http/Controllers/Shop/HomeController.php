@@ -36,6 +36,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // session()->forget('receipt');
+
         $url = $_SERVER['HTTP_HOST'];
         $domain_array = explode('.', $url);
         $sub_domain = $domain_array[0];
@@ -112,6 +114,7 @@ class HomeController extends Controller
         }
 
         return view('shop.home', [
+            'manages' => $manages,
             'shops' => $shops,
             'slides' => $slides,
             'categories' => $categories,
