@@ -113,6 +113,25 @@ class HomeController extends Controller
             }
         }
 
+        // カートの値段再取得
+        if (session()->has('cart')) {
+            $cart_amount = 0;
+            $cart_products = session('cart.products');
+            foreach ($cart_products as $val) {
+                $product = DB::table('products')->find($val['id']);
+                $product_price = $product->price;
+                if (is_array($val['options'])) {
+                    foreach ($val['options'] as $option) {
+                        $opt_temp = DB::table('options')->find($option);
+                        $product_price += $opt_temp->price;
+                    }
+                }
+                $product_price = $product_price * $val['quantity'];
+                $cart_amount += $product_price;
+            }
+            session()->put('cart.amount', $cart_amount);
+        }
+
         return view('shop.home', [
             'manages' => $manages,
             'shops' => $shops,
