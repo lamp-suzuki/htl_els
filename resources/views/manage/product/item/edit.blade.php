@@ -134,7 +134,7 @@
       <label class="form-check-label text-body" for="ec_flag">お取り寄せ</label>
     </div>
   </div>
-  <div class="form-group">
+  {{-- <div class="form-group">
     <label for="">販売店舗設定</label>
     <div class="form-check form-check-inline no-bg">
       <input class="form-check-input js-specific-exclusion" type="radio" name="saleshop-flag" id="all-shop" value="0" checked />
@@ -154,8 +154,8 @@
       <option value="{{ $shop->id }}">{{ $shop->name }}</option>
       @endforeach
     </select>
-  </div>
-  <div class="form-group">
+  </div> --}}
+  {{-- <div class="form-group">
     <label for="">公開予約</label>
     <div class="form-check">
       <input class="form-check-input" type="checkbox" name="reserve" value="1" id="postPublic" />
@@ -183,7 +183,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   <div class="d-flex mt-3">
     <input type="submit" class="btn bg-white text-success mr-2" id="btnDraft" name="draft" value="下書き保存">
     <button type="button" class="btn btn-success text-white" id="btnPublic">公開する</button>
