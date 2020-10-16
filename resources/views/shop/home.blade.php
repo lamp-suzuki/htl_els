@@ -7,7 +7,7 @@
     @if (session('receipt.date') !== null)
     <span class="date">{{ date('n月j日', strtotime(session('receipt.date'))).' '.session('receipt.time') }}</span>
     @else
-    <span class="date">未選択</span>
+    <span class="date">お受け取り日時未選択</span>
     @endif
     <div class="link">変更</div>
   </div>
