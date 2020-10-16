@@ -2,26 +2,17 @@
 
 @section('content')
 
-@if (session()->has('receipt.date'))
-@php
-if (session('receipt.service') == 'takeout') {
-    $service = 'お持ち帰り';
-} elseif (session('receipt.service') == 'delivery') {
-    $service = 'デリバリー';
-} else {
-    $service = 'お取り寄せ';
-}
-@endphp
 <div id="changeDateBtn" data-toggle="modal" data-target="#ChangeDate">
   <div class="container">
     @if (session('receipt.date') !== null)
     <span class="date">{{ date('n月j日', strtotime(session('receipt.date'))).' '.session('receipt.time') }}</span>
+    @else
+    <span class="date">未選択</span>
     @endif
     <div class="link">変更</div>
   </div>
 </div>
 <!-- #changeDateBtn -->
-@endif
 
 @if ($slides != null)
 <div class="container home-slide-container">
