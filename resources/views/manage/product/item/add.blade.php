@@ -114,11 +114,11 @@
   <div class="form-group">
     <label for="">対応サービス</label>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="1" name="takeout_flag" id="takeout_flag" checked />
+      <input class="form-check-input" type="checkbox" value="1" name="takeout_flag" id="takeout_flag" />
       <label class="form-check-label text-body" for="takeout_flag">お持ち帰り</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="1" name="delivery_flag" id="delivery_flag" />
+      <input class="form-check-input" type="checkbox" value="1" name="delivery_flag" id="delivery_flag" checked />
       <label class="form-check-label text-body" for="delivery_flag">デリバリー</label>
     </div>
     <div class="form-check">
