@@ -124,7 +124,7 @@
             @else
             <span>なし</span>
             @endif</p>
-            <input type="hidden" name="set_receipt" value="{{ session('form_payment.set-receipt') }}">
+            <input type="hidden" name="set_receipt" value="{{ session('form_payment.set-receipt') == 1 ? 1 : 0 }}">
             <input type="hidden" name="receipt_name" value="{{ session('form_payment.receipt_name') }}">
         </div>
       </div>
