@@ -398,6 +398,11 @@
         <div class="form-group">
           <select id="changedeliveryDate" class="form-control" name="delivery_date">
             @for ($i = 0; $i <= 6; $i++)
+            @php
+            if ($manages->delivery_preparation >= (60*24) && $i == 0) {
+                continue;
+            }
+            @endphp
             <option value="{{ date('Y-m-d', strtotime('+'.$i.' day')) }}"@if(session('receipt.date') !== null && session('receipt.date') == date('Y-m-d', strtotime('+'.$i.' day'))) selected @endif>{{ date('Y年n月j日', strtotime('+'.$i.' day')) }}@if($i == 0)（本日）@elseif($i == 1)（明日）@endif</option>
             @endfor
           </select>
