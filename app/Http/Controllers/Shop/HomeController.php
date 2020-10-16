@@ -113,7 +113,7 @@ class HomeController extends Controller
             }
         }
 
-        // カートの値段再取得
+        // カートの値段再設定
         if (session()->has('cart')) {
             $cart_amount = 0;
             $cart_products = session('cart.products');
