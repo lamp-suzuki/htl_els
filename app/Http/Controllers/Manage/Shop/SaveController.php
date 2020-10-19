@@ -25,6 +25,7 @@ class SaveController extends Controller
                 DB::table('shops')->where('id', $request['shops_id'])->update([
                     'name' => $request['name'],
                     'tel' => $request['tel'],
+                    'fax' => $request['fax'],
                     'email' => $request['email'],
                     'zipcode' => $request['zipcode'],
                     'pref' => $request['pref'],
@@ -68,6 +69,7 @@ class SaveController extends Controller
                     'manages_id' => $manage->id,
                     'name' => $request['name'],
                     'tel' => $request['tel'],
+                    'fax' => $request['fax'],
                     'email' => $request['email'],
                     'zipcode' => $request['zipcode'],
                     'pref' => $request['pref'],

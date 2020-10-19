@@ -30,6 +30,10 @@ $weeks = ['sun' => '日','mon' => '月','tue' => '火','wed' => '水','thu' => '
     <input type="tel" class="form-control" id="tel" name="tel" value="{{ $shop->tel }}" required />
   </div>
   <div class="form-group">
+    <label for="fax">FAX</label>
+    <input type="tel" class="form-control" id="fax" name="fax" value="{{ $shop->fax }}" />
+  </div>
+  <div class="form-group">
     <label for="email">
       メールアドレス
       <span class="badge badge-warning text-white ml-1">必須</span>
