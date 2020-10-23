@@ -150,8 +150,17 @@
                         </div>
                       </div>
                       @if (isset($options[$cat->id]))
+                      @php
+                      if ($product->options_id != '' && $product->options_id != null) {
+                          $product_options = explode(',', $product->options_id);
+                          array_pop($product_options);
+                      } else {
+                          $product_options = [];
+                      }
+                      @endphp
                       <div class="option">
                         @foreach ($options[$cat->id] as $opt)
+                        @if(in_array((String)$opt->id, $product_options))
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox"
                             name="options[]"
@@ -162,6 +171,7 @@
                             <span class="yen">{{ number_format($opt->price) }}</span>
                           </label>
                         </div>
+                        @endif
                         @endforeach
                       </div>
                       @endif
