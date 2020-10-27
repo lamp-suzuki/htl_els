@@ -363,9 +363,9 @@
             </div>
             <small id="datevali" class="form-text text-danger" style="display: none">有効な日時をご選択ください</small>
             <div class="text-center mt-4">
-              <button class="btn-step-back mr-1" type="button">
+              {{-- <button class="btn-step-back mr-1" type="button">
                 <i data-feather="arrow-left"></i>
-              </button>
+              </button> --}}
               <button class="btn btn-primary rounded-pill" id="nextstep3" type="button">メニュー選択に進む</button>
             </div>
           </div>
