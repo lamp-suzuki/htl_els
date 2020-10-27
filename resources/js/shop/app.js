@@ -20,6 +20,9 @@ $(function() {
   });
 
   // OnlyTOP
+  $("#FirstSelect").modal({
+    backdrop: 'static'
+  });
   $("#FirstSelect").modal("show");
   $("#salestop").modal("show");
 
