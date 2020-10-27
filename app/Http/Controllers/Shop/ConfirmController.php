@@ -18,18 +18,6 @@ class ConfirmController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request['pay'] == 0) {
-            Validator::make($request->all(), [
-                'payjp-token' => 'required',
-            ])->validate();
-        }
-
-        Validator::make($request->all(), [
-            'pay' => 'required',
-        ])->validate();
-
-        $request->session()->put('form_payment', $request->all());
-
         if (Auth::check()) {
             $url = $_SERVER['HTTP_HOST'];
             $domain_array = explode('.', $url);
@@ -41,14 +29,26 @@ class ConfirmController extends Controller
         }
 
         $receipt = session('receipt'); // 受け取り設定
-        if (session('receipt.service') == 'takeout') {
-            $shop = DB::table('shops')->where('id', $receipt['shop_id'])->first(); // 店舗情報
-        } else {
-            $shop = null; // 店舗情報
-        }
+        $shop = DB::table('shops')->where('id', $receipt['shop_id'])->first(); // 店舗情報
         $cart = session('cart'); // カート情報
         $form_order = session('form_order'); // お客様情報
-        $payment = $request->all(); // 支払い情報
+
+        if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+            if ($request['pay'] == 0) {
+                Validator::make($request->all(), [
+                    'payjp-token' => 'required',
+                ])->validate();
+            }
+
+            Validator::make($request->all(), [
+                'pay' => 'required',
+            ])->validate();
+
+            $request->session()->put('form_payment', $request->all());
+            $payment = $request->all(); // 支払い情報
+        } else {
+            $payment = session('form_payment'); // 支払い情報
+        }
 
         $carts = [];
         $amount = 0;
