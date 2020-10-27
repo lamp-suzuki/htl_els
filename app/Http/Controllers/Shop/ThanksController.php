@@ -132,11 +132,11 @@ class ThanksController extends Controller
                         "description" => $manages->name,
                     ));
                 } catch (\Throwable $th) {
-                    session()->flash('error', '決済エラーが発生しました。');
+                    session()->flash('error', 'クレジットカード決済ができませんでした。クレジットカード情報をご確認の上、再度お試しください。');
                     return redirect()->route('shop.confirm');
                 }
             } else {
-                session()->flash('error', '決済エラーが発生しました。');
+                session()->flash('error', 'クレジットカード決済ができませんでした。クレジットカード情報をご確認の上、再度お試しください。');
                 return redirect()->route('shop.confirm');
             }
         }
