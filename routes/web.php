@@ -25,7 +25,7 @@ Route::namespace('Auth')->middleware('auth')->group(function () {
 });
 
 // 店舗サイト
-Route::namespace('Shop')->name('shop.')->group(function () {
+Route::namespace('Shop')->name('shop.')->middleware('stop.flag')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     // STEP(ajax)
     Route::post('/set-service', 'HomeController@set_service')->name('set.service');
@@ -70,6 +70,7 @@ Route::prefix('manage')->namespace('Manage')->name('manage.')->group(function ()
     Route::middleware(['auth:manage'])->group(function () {
         // ダッシュボード
         Route::get('/home', 'HomeController@index')->name('home');
+        Route::post('/home/changehide', 'HomeController@change_hide')->name('changehide');
 
         // 受注管理
         Route::prefix('order')->namespace('Order')->name('order.')->group(function () {

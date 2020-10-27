@@ -34,7 +34,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         // session()->forget('receipt');
 
@@ -132,6 +132,13 @@ class HomeController extends Controller
             session()->put('cart.amount', $cart_amount);
         }
 
+        // 非表示フラグ
+        if ($request->has('stop_flag') && $request->stop_flag === true) {
+            $stop_flag = true;
+        } else {
+            $stop_flag = false;
+        }
+
         return view('shop.home', [
             'manages' => $manages,
             'shops' => $shops,
@@ -141,6 +148,7 @@ class HomeController extends Controller
             'products' => $products,
             'posts' => $posts,
             'stocks' => $stocks,
+            'stop_flag' => $stop_flag,
         ]);
     }
 

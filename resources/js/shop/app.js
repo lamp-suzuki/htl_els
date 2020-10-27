@@ -21,6 +21,7 @@ $(function() {
 
   // OnlyTOP
   $("#FirstSelect").modal("show");
+  $("#salestop").modal("show");
 
   // STEP1
   $("#step1")

@@ -91,6 +91,26 @@ $("#stock-btn").on("click", function() {
   }, 500);
 });
 
+// サイト一時販売停止
+$("input#shop_close").on("change", function() {
+  let bool = $(this).prop("checked");
+  $.ajax({
+    url: "/manage/home/changehide",
+    type: "POST",
+    data: {
+      bool: bool
+    },
+    success: function(r) {
+      console.log(r);
+      if (r == 'true') {
+        alert("一時的にご注文をストップしました。");
+      } else {
+        alert("ご注文のストップを解除しました。");
+      }
+    }
+  });
+});
+
 function editStock(stock, date, id) {
   $.ajax({
     url: "/manage/product/item/set-stock",

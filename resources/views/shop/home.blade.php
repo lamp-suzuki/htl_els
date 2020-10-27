@@ -1,7 +1,6 @@
 @extends('layouts.shop.app')
 
 @section('content')
-
 <div id="changeDateBtn" data-toggle="modal" data-target="#ChangeDate">
   <div class="container">
     @if (session('receipt.date') !== null)
@@ -76,6 +75,7 @@
               <span class="catalog-price-num">{{ number_format($product->price) }}</span>
               <span class="catalog-price-tax">（税込）</span>
             </div>
+            @if($stop_flag === false)
             <div class="catalog-btn">
               @if (isset($stocks[$product->id]) && $stocks[$product->id] <= 0)
               <button class="btn btn-block btn-dark" type="button">売り切れ</button>
@@ -84,6 +84,7 @@
                 data-target="#modal-item{{ $product->id }}">数量・オプションを選ぶ</button>
               @endif
             </div>
+            @endif
             <!-- modal -->
             <div class="modal catalog-modal fade" id="modal-item{{ $product->id }}" tabindex="-1"
               aria-labelledby="modal-item{{ $product->id }}Label" aria-hidden="true">
@@ -149,36 +150,38 @@
                           <span class="price-tax">（税込）</span>
                         </div>
                       </div>
-                      @if (isset($options[$cat->id]))
-                      @php
-                      if ($product->options_id != '' && $product->options_id != null) {
-                          $product_options = explode(',', $product->options_id);
-                          array_pop($product_options);
-                      } else {
-                          $product_options = [];
-                      }
-                      @endphp
-                      <div class="option">
-                        @foreach ($options[$cat->id] as $opt)
-                        @if(in_array((String)$opt->id, $product_options))
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox"
-                            name="options[]"
-                            value="{{ $opt->id }}"
-                            id="product{{ $product->id }}_opt{{ $opt->id }}" />
-                          <label class="form-check-label" for="product{{ $product->id }}_opt{{ $opt->id }}">
-                            <span>{{ $opt->name }}</span>
-                            <span class="yen">{{ number_format($opt->price) }}</span>
-                          </label>
+                      @if($stop_flag === false)
+                        @if (isset($options[$cat->id]))
+                        @php
+                        if ($product->options_id != '' && $product->options_id != null) {
+                            $product_options = explode(',', $product->options_id);
+                            array_pop($product_options);
+                        } else {
+                            $product_options = [];
+                        }
+                        @endphp
+                        <div class="option">
+                          @foreach ($options[$cat->id] as $opt)
+                          @if(in_array((String)$opt->id, $product_options))
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                              name="options[]"
+                              value="{{ $opt->id }}"
+                              id="product{{ $product->id }}_opt{{ $opt->id }}" />
+                            <label class="form-check-label" for="product{{ $product->id }}_opt{{ $opt->id }}">
+                              <span>{{ $opt->name }}</span>
+                              <span class="yen">{{ number_format($opt->price) }}</span>
+                            </label>
+                          </div>
+                          @endif
+                          @endforeach
                         </div>
                         @endif
-                        @endforeach
-                      </div>
-                      @endif
-                      @if (isset($stocks[$product->id]) && $stocks[$product->id] > 0)
-                      <div class="number">
-                        <input class="num-spinner" type="number" name="quantity" value="1" min="1" max="50" step="1" />
-                      </div>
+                        @if (isset($stocks[$product->id]) && $stocks[$product->id] > 0)
+                        <div class="number">
+                          <input class="num-spinner" type="number" name="quantity" value="1" min="1" max="50" step="1" />
+                        </div>
+                        @endif
                       @endif
                     </div>
                     @if (isset($stocks[$product->id]) && $stocks[$product->id] > 0)
@@ -216,7 +219,7 @@
   <a class="btn btn-primary rounded-pill" href="{{ route('shop.cart') }}">次へ進む</a>
 </div>
 
-@if (!session()->has('receipt.date'))
+@if (!session()->has('receipt.date') && $stop_flag === false)
 <!-- FirstSelect -->
 <div class="modal fsmodal catalog-modal fade" id="FirstSelect" tabindex="-1" aria-labelledby="FirstSelectLabel"
   aria-hidden="true">
@@ -381,7 +384,7 @@
 </div>
 @endif
 
-@if (session()->has('receipt'))
+@if (session()->has('receipt') && $stop_flag === false)
 <!-- ChangeDate -->
 <div class="modal catalog-modal fsmodal fade" id="ChangeDate" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -435,4 +438,42 @@
   </div>
 </div>
 @endif
+
+{{-- hidden_flag --}}
+@if ($stop_flag === true)
+<div class="modal fade" id="salestop" tabindex="-1" role="dialog" aria-labelledby="salestopTitle" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content border-0">
+      <div class="modal-body">
+        <div class="pt-4">
+          <p class="text-center">
+            <i class="text-primary" data-feather="alert-triangle" width="32px" hegiht="32px"></i>
+          </p>
+          <p class="text-center font-weight-bold mb-3 h5">ただいま一時的に<br>ご注文の受付を<br>ストップしております</p>
+          <p class="text-center small mb-0">ご迷惑をお掛けいたしますが<br>何卒ご理解いただけますよう<br>お願い申し上げます。</p>
+        </div>
+      </div>
+      <div class="modal-footer text-center justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-primary rounded-pill" data-dismiss="modal">メニューを見る</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
+{{-- mamaindianrestaurantのみ --}}
+@if($manages->domain == 'mamaindianrestaurant')
+<script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"></script>
+<script>
+$('.option input[name="options[]"]').on("change", function() {
+  console.log('on');
+  $('.option input[name="options[]"]').prop('checked', false);
+  $(this).prop('checked', true);
+});
+</script>
+@endif
+
 @endsection

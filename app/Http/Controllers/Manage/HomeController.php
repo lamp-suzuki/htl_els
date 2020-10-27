@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -42,6 +43,20 @@ class HomeController extends Controller
             'orders' => $orders,
             'today_earnings' => $today_earnings,
             'comparison' => $comparison,
+            'manages' => $manage,
         ]);
+    }
+
+    public function change_hide(Request $request)
+    {
+        $manage = Auth::guard('manage')->user();
+        try {
+            DB::table('manages')->where('id', $manage->id)->update([
+                'show_hide' => $request->bool == 'true' ? 0 : 1
+            ]);
+            return $request->bool;
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 }
