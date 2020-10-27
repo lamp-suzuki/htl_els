@@ -22,8 +22,7 @@ $(function() {
   // OnlyTOP
   $("#FirstSelect").modal({
     backdrop: 'static'
-  });
-  $("#FirstSelect").modal("show");
+  }, "show");
   $("#salestop").modal("show");
 
   // STEP1
