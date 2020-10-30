@@ -25,7 +25,7 @@
         <a class="text-body font-weight-bold" href="{{ route('shop.home') }}">{{ $manages->name }}</a>
         @else
         <a class="d-block py-2" href="{{ route('shop.home') }}">
-          <img src="{{ url('/') }}/{{ $manages->logo }}" alt="{{ $manages->name }}" style="height: 45px !important">
+          <img src="{{ url('/') }}/{{ $manages->logo }}" alt="{{ $manages->name }}">
         </a>
         @endif
       </h1>
