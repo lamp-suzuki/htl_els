@@ -54,6 +54,7 @@ class CartController extends Controller
         // カートの値段再設定
         if (session()->has('cart')) {
             $cart_amount = 0;
+            $cart_products = [];
             $cart_products = session('cart.products');
             foreach ($cart_products as $val) {
                 $product = DB::table('products')->find($val['id']);
@@ -87,6 +88,7 @@ class CartController extends Controller
         }
 
         $service = session('receipt.service');
+        $cart_products = [];
         $cart_products = session('cart.products');
         foreach ($cart_products as $key => $product) {
             $flag = DB::table('products')->find($product['id']);
@@ -147,6 +149,7 @@ class CartController extends Controller
     public function cart_vali()
     {
         $service = session('receipt.service');
+        $cart_products = [];
         $cart_products = session('cart.products');
         foreach ($cart_products as $key => $product) {
             $flag = DB::table('products')->find($product['id']);
