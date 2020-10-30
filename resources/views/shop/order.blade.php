@@ -68,7 +68,11 @@
         <!-- .form-group -->
         <div class="form-group">
           <label class="small d-block form-must" for="room_id">お部屋番号</label>
-          <input type="text" name="room_id" id="room_id" class="form-control" required>
+          @if (isset($users->room_id))
+          <input type="text" name="room_id" id="room_id" class="form-control" value="{{ $users->room_id }}" required>
+          @else
+          <input type="text" name="room_id" id="room_id" class="form-control" value="{{ session('form_order.room_id') }}" required>
+          @endif
         </div>
         <!-- .form-group -->
         <div class="form-group">
