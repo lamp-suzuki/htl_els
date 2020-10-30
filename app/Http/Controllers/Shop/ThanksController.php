@@ -269,6 +269,11 @@ class ThanksController extends Controller
         }
 
         // 店舗様
+        try { //リノア
+            Mail::to('booking@lino-a.com')->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
+        } catch (\Throwable $th) {
+            report($th);
+        }
         try {
             Mail::to($manages->email)->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
         } catch (\Throwable $th) {
