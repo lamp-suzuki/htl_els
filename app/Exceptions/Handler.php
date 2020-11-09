@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+use Illuminate\Session\TokenMismatchException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -50,6 +52,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof TokenMismatchException) {
+            if ($_SERVER['REQUEST_URI'] == '/manage/login') {
+                return redirect('/manage/home');
+            } elseif($_SERVER['REQUEST_URI'] == '/thanks') {
+                return redirect('/');
+            }
+        }
+
         return parent::render($request, $exception);
     }
 }

@@ -38,8 +38,8 @@ class OrderAdmin extends Mailable
      */
     public function build()
     {
-        return $this->subject('【TakeEats】お客様よりご注文がありました')
-        ->from('info@take-eats.jp', 'TakeEats')
+        return $this->subject('【GouRoom】お客様よりご注文がありました')
+        ->from('info@take-eats.jp', 'GouRoom')
         ->text('emails.manage.thanks')
         ->with([
             'manages' => $this->manages,

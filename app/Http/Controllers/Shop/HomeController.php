@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Hash;
+
 class HomeController extends Controller
 {
     public $weeks = [
@@ -36,8 +38,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        // session()->forget('receipt');
-
         $url = $_SERVER['HTTP_HOST'];
         $domain_array = explode('.', $url);
         $sub_domain = $domain_array[0];
