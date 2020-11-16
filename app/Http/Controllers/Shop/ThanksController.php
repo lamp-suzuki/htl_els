@@ -120,9 +120,9 @@ class ThanksController extends Controller
         if (session('form_payment.pay') == 0) {
             if (session('form_payment.payjp-token') != null) {
                 // テスト
-                \Payjp\Payjp::setApiKey('sk_test_0b5384bfababd3af6117d2fc');
+                // \Payjp\Payjp::setApiKey('sk_test_0b5384bfababd3af6117d2fc');
                 // 本番
-                // \Payjp\Payjp::setApiKey('sk_live_5963e853c01db0b226dea143951c11ffd40be055415d2ec5ea068ae5');
+                \Payjp\Payjp::setApiKey('sk_live_5963e853c01db0b226dea143951c11ffd40be055415d2ec5ea068ae5');
                 try {
                     $charge = \Payjp\Charge::create(array(
                         "card" => session('form_payment.payjp-token'),

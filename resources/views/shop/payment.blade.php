@@ -32,11 +32,11 @@
             <option value="0">クレジットカード決済</option>
           </select>
           {{-- テスト --}}
-          <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
-            data-key="pk_test_a0727685f74f89262de1a310" data-submit-text="適用して閉じる" data-partial="true"></script>
-          {{-- 本番 --}}
           {{-- <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
-            data-key="pk_live_0b8df682f4f36a822c731300" data-submit-text="適用して閉じる" data-partial="true"></script> --}}
+            data-key="pk_test_a0727685f74f89262de1a310" data-submit-text="適用して閉じる" data-partial="true"></script> --}}
+          {{-- 本番 --}}
+          <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
+            data-key="pk_live_0b8df682f4f36a822c731300" data-submit-text="適用して閉じる" data-partial="true"></script>
         </div>
       </div>
     </div>
