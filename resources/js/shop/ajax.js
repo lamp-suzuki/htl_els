@@ -86,9 +86,9 @@ $("#deliveryDate, #changedeliveryDate").on("change", function() {
 $("#nextstep3").on("click", function() {
   setSelectTime($("#deliveryDate").val(), $("#delivery_time").val());
 });
-$("#changeDateBtn .link").on("click", function() {
-  getBusinessTime($("#changedeliveryDate").val());
-});
+// $("#changeDateBtn .link").on("click", function() {
+//   getBusinessTime($("#changedeliveryDate").val());
+// });
 
 $(".js-vali").on("change", function() {
   cartVali();

@@ -6,6 +6,8 @@ const feather = require("feather-icons");
 
 require("./ajax");
 
+const receipt_flag = $('meta[name="receipt"]').attr("content");
+
 $(function() {
   let head_h = $("#header").outerHeight() + 16;
   let window_w = $(window).outerWidth();
@@ -20,9 +22,16 @@ $(function() {
   });
 
   // OnlyTOP
-  $("#FirstSelect").modal({
-    backdrop: 'static'
-  }, "show");
+  if (receipt_flag == "on") {
+    $("#FirstSelect").modal({
+      backdrop: 'static'
+    }, "show");
+  }
+  $("#changeDateBtn .link").on("click", function() {
+    $("#FirstSelect").modal({
+      backdrop: 'static'
+    }, "show");
+  });
   $("#salestop").modal("show");
 
   // STEP1
@@ -45,25 +54,6 @@ $(function() {
       $("#first-progress .steps").text("3/3");
       $("#first-progress .progress-bar").css("width", "66.66666%");
       $("#first-progress .progress-bar").attr("aria-valuenow", "66.66666%");
-    });
-  $("#step2")
-    .find(".btn-step-back")
-    .on("click", function() {
-      $("#step2").removeClass("show active");
-      $("#step1").addClass("show active");
-      $("#first-progress .steps").text("1/3");
-      $("#first-progress .progress-bar").css("width", "0");
-      $("#first-progress .progress-bar").attr("aria-valuenow", "0");
-    });
-  // STEP3
-  $("#step3")
-    .find(".btn-step-back")
-    .on("click", function() {
-      $("#step3").removeClass("show active");
-      $("#step2").addClass("show active");
-      $("#first-progress .steps").text("2/3");
-      $("#first-progress .progress-bar").css("width", "33.33333%");
-      $("#first-progress .progress-bar").attr("aria-valuenow", "33.33333");
     });
 
   // スムーススクロール

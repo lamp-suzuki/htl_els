@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="receipt" content="{{ !session()->has('receipt.date') && !session()->has('receipt.time') ? 'on' : 'no' }}">
   <title>【公式】{{ $meta_title }} | テイクアウト（お持ち帰り）注文サイト</title>
   <meta name="description" content="{{ $meta_description }}">
   <!-- Fonts -->

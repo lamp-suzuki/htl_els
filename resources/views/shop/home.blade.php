@@ -1,14 +1,14 @@
 @extends('layouts.shop.app')
 
 @section('content')
-<div id="changeDateBtn" data-toggle="modal" data-target="#ChangeDate">
+<div id="changeDateBtn">
   <div class="container">
     @if (session('receipt.date') !== null)
     <span class="date">{{ date('n月j日', strtotime(session('receipt.date'))).' '.session('receipt.time') }}</span>
     @else
     <span class="date">お受け取り日時未選択</span>
     @endif
-    <div class="link">変更する</div>
+    <div class="link" style="cursor: pointer">変更する</div>
   </div>
 </div>
 <!-- #changeDateBtn -->
@@ -219,7 +219,7 @@
   <a class="btn btn-primary rounded-pill" href="{{ route('shop.cart') }}">次へ進む</a>
 </div>
 
-@if (!session()->has('receipt.date') && $stop_flag === false)
+@if ($stop_flag === false)
 <!-- FirstSelect -->
 <div class="modal fsmodal catalog-modal fade" id="FirstSelect" tabindex="-1" aria-labelledby="FirstSelectLabel"
   aria-hidden="true">
@@ -341,7 +341,7 @@
           </div> --}}
           <div id="step3" class="tab-pane fade show active">
             <h3>
-              {{-- <span>STEP2</span> --}}
+              <span></span>
               <span>お受け取り日時を選択</span>
             </h3>
             <div class="form-group">
