@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\DB;
 class CartController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // $this->middleware('auth');
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -35,7 +25,7 @@ class CartController extends Controller
 
         // 送料設定
         if (session()->has('receipt.service') && session('receipt.service') != 'takeout') {
-            if ($manages->{session('receipt.service').'_shipping_free'} <= session('cart.amount')) {
+            if ($manages->{session('receipt.service').'_shipping_free'} != null && $manages->{session('receipt.service').'_shipping_free'} <= session('cart.amount')) {
                 session()->put('cart.shipping', 0);
             } else {
                 session()->put('cart.shipping', $manages->{session('receipt.service').'_shipping'});
@@ -51,59 +41,41 @@ class CartController extends Controller
             $delivery_shipping_min = null;
         }
 
-        // カートの値段再設定
-        if (session()->has('cart')) {
-            $cart_amount = 0;
-            $cart_products = [];
-            $cart_products = session('cart.products');
-            foreach ($cart_products as $val) {
-                $product = DB::table('products')->find($val['id']);
-                $product_price = $product->price;
-                if (is_array($val['options'])) {
-                    foreach ($val['options'] as $option) {
-                        $opt_temp = DB::table('options')->find($option);
-                        $product_price += $opt_temp->price;
-                    }
-                }
-                $product_price = $product_price * $val['quantity'];
-                $cart_amount += $product_price;
-            }
-            session()->put('cart.amount', $cart_amount);
-        }
-
         $products = [];
         $options = [];
         // カート商品取得
-        foreach (session('cart.products') as $index => $product) {
-            $products[$index] = DB::table('products')->find($product['id']);
-            $temp_price = 0;
-            if ($product['options'] !== null) {
-                foreach ($product['options'] as $key => $opt) {
-                    $temp = DB::table('options')->find($opt);
-                    $temp_price += $temp->price;
-                    $options[$index]['name'][] = $temp->name;
+        if (session('cart.products') != null) {
+            foreach (session('cart.products') as $index => $product) {
+                $products[$index] = DB::table('products')->find($product['id']);
+                $temp_price = 0;
+                if ($product['options'] !== null) {
+                    foreach ($product['options'] as $key => $opt) {
+                        $temp = DB::table('options')->find($opt);
+                        $temp_price += $temp->price;
+                        $options[$index]['name'][] = $temp->name;
+                    }
+                    $options[$index]['price'] = $temp_price;
                 }
-                $options[$index]['price'] = $temp_price;
             }
-        }
-
-        $service = session('receipt.service');
-        $cart_products = [];
-        $cart_products = session('cart.products');
-        foreach ($cart_products as $key => $product) {
-            $flag = DB::table('products')->find($product['id']);
-            if ($flag->{$service.'_flag'} == 0) {
-                session()->put('cart.vali', 'bad');
-                break;
-            } else {
+            $cart_products = session('cart.products');
+            foreach ($cart_products as $key => $product) {
+                $flag = DB::table('products')->find($product['id']);
+                if ($flag->{session('receipt.service').'_flag'} == 0) {
+                    session()->put('cart.vali', 'bad');
+                    session()->put('cart.vali_product', $flag->name);
+                    break;
+                } else {
+                    if (session()->has('cart.vali')) {
+                        session()->forget('cart.vali');
+                        session()->forget('cart.vali_product');
+                    }
+                }
+            }
+            if (count($cart_products) < 1) {
                 if (session()->has('cart.vali')) {
                     session()->forget('cart.vali');
+                    session()->forget('cart.vali_product');
                 }
-            }
-        }
-        if (count($cart_products) < 1) {
-            if (session()->has('cart.vali')) {
-                session()->forget('cart.vali');
             }
         }
 

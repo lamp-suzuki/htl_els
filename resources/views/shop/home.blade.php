@@ -8,7 +8,7 @@
     @else
     <span class="date">お受け取り日時未選択</span>
     @endif
-    <div class="link">変更</div>
+    <div class="link">変更する</div>
   </div>
 </div>
 <!-- #changeDateBtn -->

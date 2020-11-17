@@ -102,31 +102,6 @@
     </div>
   </div>
   <div>
-    @if (!isset($users))
-    {{-- <div class="pt-4 pt-md-0 pb-4">
-      <h3 class="ttl-horizon">
-        <span class="d-block container">会員について</span>
-      </h3>
-      <div class="container">
-        @if (!Auth::check())
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="memberCheck" name="member_check" value="1" />
-          <label class="form-check-label" for="memberCheck">この内容で会員登録する</label>
-        </div>
-        @endif
-        <div class="takeeats-bbox">
-          <p class="m-0">
-            <i data-feather="check-square" class="text-primary mr-1"></i>
-            <span class="small">次回からの注文が簡単に！</span>
-          </p>
-          <p class="m-0">
-            <i data-feather="check-square" class="text-primary mr-1"></i>
-            <span class="small">ポイントを貯めてお得に注文！</span>
-          </p>
-        </div>
-      </div>
-    </div> --}}
-    @endif
     <div class="py-4 bg-light">
       <div class="container">
         <div class="d-flex justify-content-center form-btns">

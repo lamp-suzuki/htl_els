@@ -85,7 +85,7 @@ class ThanksController extends Controller
         // 店舗ID設定
         $shop_fax = '';
         $shop_email = '';
-        if ($request['shop_id'] !== null) {
+        if ($request->has('shop_id') && $request['shop_id'] !== null) {
             $shop_info = DB::table('shops')->find($request['shop_id']);
             $shops_id = $shop_info->id;
             $shop_fax = $shop_info->fax;
@@ -119,9 +119,6 @@ class ThanksController extends Controller
         // 決済処理
         if (session('form_payment.pay') == 0) {
             if (session('form_payment.payjp-token') != null) {
-                // テスト
-                // \Payjp\Payjp::setApiKey('sk_test_0b5384bfababd3af6117d2fc');
-                // 本番
                 \Payjp\Payjp::setApiKey('sk_live_5963e853c01db0b226dea143951c11ffd40be055415d2ec5ea068ae5');
                 try {
                     $charge = \Payjp\Charge::create(array(
@@ -142,63 +139,67 @@ class ThanksController extends Controller
         }
 
         // 会員処理
-        if (Auth::check()) {
-            $users_id = Auth::id();
-            // ポイント付与
-            if ($manages->point_flag) {
-                DB::table('points')->updateOrInsert(
-                    ['manages_id' => $manages->id, 'users_id' => $users_id],
-                    [
-                        'count' => +floor($total_amount*0.01),
-                        'updated_at' => now(),
-                    ]
-                );
-                $get_point = floor($total_amount*0.01);
-                if (session('form_payment.use_points') > 0) {
-                    DB::table('points')
-                    ->where(['manages_id' => $manages->id, 'users_id' => $users_id])
-                    ->update(
-                        ['count' => -(int)session('form_payment.use_points')]
-                    );
-                }
-            } else {
-                $get_point = 0;
-            }
-        } else {
-            $users_id = null;
-            $get_point = 0;
-        }
+        // if (Auth::check()) {
+        //     $users_id = Auth::id();
+        //     // ポイント付与
+        //     if ($manages->point_flag) {
+        //         DB::table('points')->updateOrInsert(
+        //             ['manages_id' => $manages->id, 'users_id' => $users_id],
+        //             [
+        //                 'count' => +floor($total_amount*0.01),
+        //                 'updated_at' => now(),
+        //             ]
+        //         );
+        //         $get_point = floor($total_amount*0.01);
+        //         if (session('form_payment.use_points') > 0) {
+        //             DB::table('points')
+        //             ->where(['manages_id' => $manages->id, 'users_id' => $users_id])
+        //             ->update(
+        //                 ['count' => -(int)session('form_payment.use_points')]
+        //             );
+        //         }
+        //     } else {
+        //         $get_point = 0;
+        //     }
+        // } else {
+        //     $users_id = null;
+        //     $get_point = 0;
+        // }
+        $users_id = null;
+        $get_point = 0;
 
         // 注文データ作成
-        $order_id = DB::table('orders')->insertGetId([
-            'manages_id' => $manages->id,
-            'shops_id' => $shops_id,
-            'carts' => json_encode($cart),
-            'service' => $service,
-            'okimochi' => (isset($request['okimochi'])&&$request['okimochi'] != null) ? $request['okimochi'] : 0,
-            'shipping' => $shipping,
-            'delivery_time' => $request['delivery_time'],
-            'total_amount' => $total_amount,
-            'payment_method' => $request['payment_method'],
-            'users_id' => $users_id,
-            'name' => $request['name'],
-            'furigana' => $request['furigana'],
-            'tel' => $request['tel'],
-            'email' => $request['email'],
-            'zipcode' => $request['zipcode'],
-            'pref' => $request['pref'],
-            'address1' => $request['address1'],
-            'address2' => $request['address2'],
-
-            'charge_id' => isset($charge) ? $charge->id : null,
-
-            'receipt' => $request['set_receipt'],
-            'receipt_name' => $request['receipt_name'] != null ? $request['receipt_name'] : null,
-            'other_content' => $request['other_content'],
-
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        try {
+            $order_id = DB::table('orders')->insertGetId([
+                'manages_id' => $manages->id,
+                'shops_id' => $shops_id,
+                'carts' => json_encode($cart),
+                'service' => $service,
+                'okimochi' => (isset($request['okimochi'])&&$request['okimochi'] != null) ? $request['okimochi'] : 0,
+                'shipping' => $shipping,
+                'delivery_time' => $request['delivery_time'],
+                'total_amount' => $total_amount,
+                'payment_method' => $request['payment_method'],
+                'users_id' => $users_id,
+                'name' => $request['name'],
+                'furigana' => $request['furigana'],
+                'tel' => $request['tel'],
+                'email' => $request['email'],
+                'zipcode' => $request['zipcode'],
+                'pref' => $request['pref'],
+                'address1' => $request['address1'],
+                'address2' => $request['address2'],
+                'charge_id' => isset($charge) ? $charge->id : null,
+                'receipt' => $request['set_receipt'],
+                'receipt_name' => $request['receipt_name'] != null ? $request['receipt_name'] : null,
+                'other_content' => $request['other_content'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Throwable $th) {
+            session()->flash('error', '入力項目をご確認の上再度お試しください。');
+            return redirect()->route('shop.confirm');
+        }
 
         // 在庫処理
         foreach ($cart as $item) {
@@ -234,26 +235,26 @@ class ThanksController extends Controller
         ];
 
         // 会員登録処理
-        if (session('form_order.member_check') == 1) {
-            $pass = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
-            $users_id = DB::table('users')->insertGetId([
-                'name' => $request['name'],
-                'furigana' => $request['furigana'],
-                'tel' => $request['tel'],
-                'email' => $request['email'],
-                'zipcode' => $request['zipcode'],
-                'pref' => $request['pref'],
-                'address1' => $request['address1'],
-                'address2' => $request['address2'],
-                'password' => Hash::make($pass),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            $register_user = DB::table('users')->find($users_id);
-            // メール送信
-            $subject_user = '【'.$manages->name.'】会員登録完了のお知らせ';
-            Mail::to($request['email'])->send(new CreateUser($subject_user, $register_user, $manages, $pass));
-        }
+        // if (session('form_order.member_check') == 1) {
+        //     $pass = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
+        //     $users_id = DB::table('users')->insertGetId([
+        //         'name' => $request['name'],
+        //         'furigana' => $request['furigana'],
+        //         'tel' => $request['tel'],
+        //         'email' => $request['email'],
+        //         'zipcode' => $request['zipcode'],
+        //         'pref' => $request['pref'],
+        //         'address1' => $request['address1'],
+        //         'address2' => $request['address2'],
+        //         'password' => Hash::make($pass),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        //     $register_user = DB::table('users')->find($users_id);
+        //     // メール送信
+        //     $subject_user = '【'.$manages->name.'】会員登録完了のお知らせ';
+        //     Mail::to($request['email'])->send(new CreateUser($subject_user, $register_user, $manages, $pass));
+        // }
 
         // セッション削除
         $request->session()->forget(['form_payment', 'form_cart', 'form_order', 'receipt', 'cart']);

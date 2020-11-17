@@ -22,9 +22,18 @@
     @csrf
     <div class="cart__list pb-4 pt-md-4">
       <div class="container">
+        {{-- エラーメッセージ --}}
+        @if(session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+          {{ session('error') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        @endif
         @if (session()->has('cart.vali'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          選択サービス対象外の商品がカート内にあります。
+          選択サービス対象外の商品がカート内にあります。<br><small>「{{ session('cart.vali_product') }}」</small>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -36,11 +45,12 @@
         </div>
         @endif
         <ol>
+          @if(is_array($products) && count($products) > 0)
           @foreach ($products as $index => $product)
           <li>
             @if (isset($product->thumbnail_1))
             <div class="thumbnail">
-              <img src="{{ url('/') }}/{{ $product->thumbnail_1 }}" alt="" />
+              <img src="{{ url($product->thumbnail_1) }}" alt="{{ $product->name }}" />
             </div>
             @endif
             <div class="info">
@@ -61,7 +71,7 @@
               @endphp
               <p class="price">{{ number_format(($product->price + $opt_price)*session('cart.products.'.$index.'.quantity')) }}</p>
               <select class="form-control form-control-sm w-auto js-cart-quantity" name="counts" data-quantity="{{ session('cart.products.'.$index.'.quantity') }}" data-index="{{ $index }}" data-price="{{ $product->price + $opt_price }}">
-                @for ($i = 1; $i <= 10; $i++)
+                @for ($i = 1; $i <= 50; $i++)
                 <option value="{{ $i }}"@if($i==session('cart.products.'.$index.'.quantity')) selected @endif>{{ $i }}</option>
                 @endfor
               </select>
@@ -71,6 +81,9 @@
             </div>
           </li>
           @endforeach
+          @else
+          <li>カートの中身は空です。</li>
+          @endif
         </ol>
       </div>
     </div>
@@ -189,7 +202,7 @@
       <div class="container">
         <div class="d-flex justify-content-center form-btns">
           <a class="btn btn-lg bg-white btn-back mr-2" href="{{ route('shop.home') }}">戻る</a>
-          <button id="submitbtn" class="btn btn-lg btn-primary" type="button" @if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')))disabled @endif>注文へ進む</button>
+          <button id="submitbtn" class="btn btn-lg btn-primary" type="button" @if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')) || (session('cart.amount') + session('cart.shipping')) <= 0)disabled @endif>注文へ進む</button>
           {{-- <button class="btn btn-lg btn-primary" type="submit">注文へ進む</button> --}}
         </div>
       </div>

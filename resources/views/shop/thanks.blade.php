@@ -8,11 +8,22 @@
       <span>ご注文を受け付けました！</span>
     </h2>
     <div class="thanks-menu">
+      @php
+      $no = 1;
+      @endphp
       @foreach ($thumbnails as $thum)
+      @php
+      if ($no >= 3) {
+          break;
+      }
+      @endphp
       @if ($thum !== null)
       <div>
         <img src="{{ url('/') }}/{{ $thum }}" />
       </div>
+      @php
+      ++$no;
+      @endphp
       @endif
       @endforeach
     </div>
