@@ -95,13 +95,12 @@
       <div class="container">
         <div class="form-group">
           <label for="changeReceive" class="small d-block">お受け取り方法</label>
-          <select id="changeReceive" class="form-control js-vali" name="changeReceive">
-            <option value="delivery">デリバリー(配達)</option>
-          </select>
+          <p class="mb-0">デリバリー(配達)</p>
         </div>
         <div class="form-group">
           <label for="changeDeliveryDate" class="small d-block">お受け取り日時</label>
-          <select id="deliveryDate" class="form-control" name="delivery_date">
+          <p>{{ date('Y年n月j日', strtotime(session('receipt.date')))}} {{ session('receipt.time') }}</p>
+          {{-- <select id="deliveryDate" class="form-control" name="delivery_date">
             @for ($i = 0; $i <= 6; $i++)
             @php
             if ($manages->delivery_preparation >= (60*24) && $i == 0) {
@@ -110,13 +109,13 @@
             @endphp
             <option value="{{ date('Y-m-d', strtotime('+'.$i.' day')) }}" @if(session('receipt.date')===date('Y-m-d', strtotime('+'.$i.' day'))) selected @endif>{{ date('Y年n月j日', strtotime('+'.$i.' day')) }}@if($i == 0)（本日）@elseif($i == 1)（明日）@endif</option>
             @endfor
-          </select>
+          </select> --}}
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
           <select id="changedeliveryTime" class="form-control" name="delivery_time">
             <option value="{{ session('receipt.time') }}">{{ session('receipt.time') }}</option>
           </select>
-        </div>
+        </div> --}}
         @if(session('receipt.service')==='takeout')
         <div class="form-group">
           <label for="changeDeliveryDate" class="small d-block">お受け取り店舗</label>
