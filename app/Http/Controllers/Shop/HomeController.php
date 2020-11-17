@@ -51,6 +51,11 @@ class HomeController extends Controller
         session()->put('receipt.shop_id', $shops[0]->id);
         session()->put('receipt.shop_name', $shops[0]->name);
 
+        // 念のため削除
+        if (session('cart.products') == null || count(session('cart.products')) <= 0) {
+            session()->forget('cart');
+        }
+
         $options = [];
         $products = [];
         foreach ($categories as $key => $cat) {
@@ -111,25 +116,6 @@ class HomeController extends Controller
                     $stocks[$item->id] = $now_stock - $customers_stock; // 残りの在庫計算
                 }
             }
-        }
-
-        // カートの値段再設定
-        if (session()->has('cart')) {
-            $cart_amount = 0;
-            $cart_products = session('cart.products');
-            foreach ($cart_products as $val) {
-                $product = DB::table('products')->find($val['id']);
-                $product_price = $product->price;
-                if (is_array($val['options'])) {
-                    foreach ($val['options'] as $option) {
-                        $opt_temp = DB::table('options')->find($option);
-                        $product_price += $opt_temp->price;
-                    }
-                }
-                $product_price = $product_price * $val['quantity'];
-                $cart_amount += $product_price;
-            }
-            session()->put('cart.amount', $cart_amount);
         }
 
         // 非表示フラグ
