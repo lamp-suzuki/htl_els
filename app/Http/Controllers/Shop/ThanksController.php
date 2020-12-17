@@ -200,7 +200,7 @@ class ThanksController extends Controller
             'receipt' => $request['set_receipt'] == 0 ? 'なし' : 'あり',
             'receipt_name' => $request['receipt_name'] != null ? $request['receipt_name'] : '',
             'other' => session('form_cart.other_content') != null ? session('form_cart.other_content') : 'なし',
-            'okimochi' => session('form_cart.okimochi'),
+            'okimochi' => session('cart.okimochi') != null ? session('cart.okimochi') : 0,
             'use_points' => $use_points,
             'get_point' => $get_point,
             'shipping' => $shipping,
