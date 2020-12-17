@@ -61,7 +61,7 @@
           <tbody>
             <tr>
               <th>商品小計</th>
-              <td>¥ {{ number_format(session('cart.amount') - session('form_cart.okimochi')) }}</td>
+              <td>¥ {{ number_format(session('cart.amount')) }}</td>
             </tr>
             @if (session('cart.shipping') !== 0)
             <tr>
@@ -71,7 +71,7 @@
             @endif
             <tr>
               <th>応援金</th>
-              <td>¥ {{ number_format(session('form_cart.okimochi')) }}</td>
+              <td>¥ {{ number_format(session('cart.okimochi')) }}</td>
             </tr>
           </tbody>
           <tfoot>

@@ -137,34 +137,6 @@ class ThanksController extends Controller
                 return redirect()->route('shop.confirm');
             }
         }
-
-        // 会員処理
-        // if (Auth::check()) {
-        //     $users_id = Auth::id();
-        //     // ポイント付与
-        //     if ($manages->point_flag) {
-        //         DB::table('points')->updateOrInsert(
-        //             ['manages_id' => $manages->id, 'users_id' => $users_id],
-        //             [
-        //                 'count' => +floor($total_amount*0.01),
-        //                 'updated_at' => now(),
-        //             ]
-        //         );
-        //         $get_point = floor($total_amount*0.01);
-        //         if (session('form_payment.use_points') > 0) {
-        //             DB::table('points')
-        //             ->where(['manages_id' => $manages->id, 'users_id' => $users_id])
-        //             ->update(
-        //                 ['count' => -(int)session('form_payment.use_points')]
-        //             );
-        //         }
-        //     } else {
-        //         $get_point = 0;
-        //     }
-        // } else {
-        //     $users_id = null;
-        //     $get_point = 0;
-        // }
         $users_id = null;
         $get_point = 0;
 
@@ -233,28 +205,6 @@ class ThanksController extends Controller
             'get_point' => $get_point,
             'shipping' => $shipping,
         ];
-
-        // 会員登録処理
-        // if (session('form_order.member_check') == 1) {
-        //     $pass = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
-        //     $users_id = DB::table('users')->insertGetId([
-        //         'name' => $request['name'],
-        //         'furigana' => $request['furigana'],
-        //         'tel' => $request['tel'],
-        //         'email' => $request['email'],
-        //         'zipcode' => $request['zipcode'],
-        //         'pref' => $request['pref'],
-        //         'address1' => $request['address1'],
-        //         'address2' => $request['address2'],
-        //         'password' => Hash::make($pass),
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ]);
-        //     $register_user = DB::table('users')->find($users_id);
-        //     // メール送信
-        //     $subject_user = '【'.$manages->name.'】会員登録完了のお知らせ';
-        //     Mail::to($request['email'])->send(new CreateUser($subject_user, $register_user, $manages, $pass));
-        // }
 
         // セッション削除
         $request->session()->forget(['form_payment', 'form_cart', 'form_order', 'receipt', 'cart']);

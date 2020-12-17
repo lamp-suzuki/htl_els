@@ -172,7 +172,7 @@
           <tbody>
             <tr>
               <th>商品小計</th>
-              <td>¥ {{ number_format(session('cart.amount') - session('form_cart.okimochi')) }}</td>
+              <td>¥ {{ number_format(session('cart.amount')) }}</td>
             </tr>
             @if (session('cart.shipping') !== 0)
             <tr>
@@ -188,7 +188,7 @@
             @endif
             <tr>
               <th>応援金</th>
-              <td>¥ {{ number_format(session('form_cart.okimochi')) }}</td>
+              <td>¥ {{ number_format(session('cart.okimochi')) }}</td>
             </tr>
           </tbody>
           <tfoot>
@@ -223,7 +223,7 @@
     <input type="hidden" name="pay_tok" value="{{ $payment['payjp-token'] }}">
     @endisset
     <input type="hidden" name="payment_method" value="{{ $payment['pay'] }}">
-    <input type="hidden" name="okimochi" value="{{ session('form_cart.okimochi') }}">
+    <input type="hidden" name="okimochi" value="{{ session('cart.okimochi') }}">
     <input type="hidden" name="total_amount" value="{{ (session('cart.amount') + session('cart.shipping')) }}">
   </div>
 </form>

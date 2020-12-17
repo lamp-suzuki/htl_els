@@ -19,8 +19,7 @@ class OrderController extends Controller
     {
         $request->session()->put('form_cart', $request->all());
         if ($request['okimochi'] != 0) {
-            $old_amount = session('cart.amount');
-            session()->put('cart.amount', $old_amount+(int)$request['okimochi']);
+            session()->put('cart.okimochi', (int)$request['okimochi']);
         }
 
         if ($request->has('email') && $request->has('password')) {
