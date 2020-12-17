@@ -195,9 +195,9 @@
             <tr>
               <th>合計</th>
               @if (session('form_payment.use_points') !== 0 && session('form_payment.use_points') !== null)
-              <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping')) - session('form_payment.use_points') }}</td>
+              <td>¥ {{ number_format(session('cart.amount') + session('cart.okimochi') + session('cart.shipping')) - session('form_payment.use_points') }}</td>
               @else
-              <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping')) }}</td>
+              <td>¥ {{ number_format(session('cart.amount') + session('cart.okimochi') + session('cart.shipping')) }}</td>
               @endif
             </tr>
             @if ($point_flag)

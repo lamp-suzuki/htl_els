@@ -77,7 +77,7 @@
           <tfoot>
             <tr>
               <th>合計</th>
-              <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping')) }}</td>
+              <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping') + session('cart.okimochi')) }}</td>
             </tr>
             @if ($point_flag)
             <tr class="small">
