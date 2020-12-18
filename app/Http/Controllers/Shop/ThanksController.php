@@ -185,6 +185,14 @@ class ThanksController extends Controller
             ]);
         }
 
+        if ($sub_domain == 'juicys') {
+            $hotel_name = 'ホテルエルセラーン大阪';
+        } elseif ($sub_domain == 'juicys-castle') {
+            $hotel_name = '大阪キャッスルホテル';
+        } else {
+            $hotel_name = 'ホテルエルセラーン大阪';
+        }
+
         // メール用データ
         $user = [
             'name' => $request['name'],
@@ -204,6 +212,7 @@ class ThanksController extends Controller
             'use_points' => $use_points,
             'get_point' => $get_point,
             'shipping' => $shipping,
+            'hotel_name' => $hotel_name,
         ];
 
         // セッション削除

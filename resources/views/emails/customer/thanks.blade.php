@@ -13,6 +13,7 @@
 
 [注文者様名] {{ $user['name'] }} 様
 [注文者様名（フリガナ）] {{ $user['furigana'] }}
+[ホテル名] {{ $user['hotel_name'] }}
 [お部屋番号] {{ $user['room_id'] }}
 [メールアドレス] {{ $user['email'] }}
 [お電話番号] {{ $user['tel'] }}
