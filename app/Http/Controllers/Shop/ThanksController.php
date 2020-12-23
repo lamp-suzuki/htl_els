@@ -229,22 +229,23 @@ class ThanksController extends Controller
         }
 
         // 店舗様
-        try { //リノア
-            Mail::to('booking@lino-a.com')->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
-        } catch (\Throwable $th) {
-            report($th);
-        }
-        try {
-            Mail::to($manages->email)->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
-        } catch (\Throwable $th) {
-            report($th);
-        }
+        $even_more_bcc = [ // bcc
+            'booking@lino-a.com'
+        ];
         if ($shop_email != null && $shop_email != '') {
-            try {
-                Mail::to($shop_email)->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
-            } catch (\Throwable $th) {
-                report($th);
-            }
+            $even_more_bcc[] = $shop_email;
+        }
+        if ($sub_domain == 'rubbersoul') {
+            $even_more_bcc[] = 'hello-brand-new-world@docomo.ne.jp';
+            $even_more_bcc[] = 'guizhil923@gmail.com';
+        }
+
+        try {
+            Mail::to($manages->email)
+                ->bcc($even_more_bcc)
+                ->send(new OrderAdmin($manages, $user, $shop_info, $service, $data));
+        } catch (\Throwable $th) {
+            report($th);
         }
 
         // FAX
