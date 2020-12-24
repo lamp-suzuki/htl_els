@@ -238,8 +238,9 @@ class ThanksController extends Controller
         if ($sub_domain == 'rubbersoul') {
             $even_more_bcc[] = 'hello-brand-new-world@docomo.ne.jp';
             $even_more_bcc[] = 'guizhil923@gmail.com';
+        } elseif ($sub_domain == 'mamaindianrestaurant-castle') {
+            $even_more_bcc[] = 'kimee0703@gmail.com';
         }
-
         try {
             Mail::to($manages->email)
                 ->bcc($even_more_bcc)

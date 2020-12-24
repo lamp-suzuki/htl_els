@@ -462,7 +462,7 @@
 @endif
 
 {{-- mamaindianrestaurantのみ --}}
-@if($manages->domain == 'mamaindianrestaurant')
+@if($manages->domain == 'mamaindianrestaurant' || $manages->domain == 'mamaindianrestaurant-castle')
 <script
   src="https://code.jquery.com/jquery-3.5.1.min.js"
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
