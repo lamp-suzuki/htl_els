@@ -193,17 +193,17 @@ class HomeController extends Controller
                 for ($i = explode(':', $business_time_start)[0]; $i <= explode(':', $business_time_end)[0]; $i++) {
                     for ($j = 0; $j <= 45; $j+=15) {
                         if ($inputs_date == date('Y-m-d')) {
-                            if (strtotime(date('H:i', strtotime("+".$preparation." minute"))) > strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                            if (strtotime(date('Y-m-d H:i', strtotime("+".$preparation." minute"))) > strtotime($inputs_date.' '.$i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                 continue;
                             } else {
-                                if (strtotime(date('H:i', strtotime($business_time_end))) < strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                                if (strtotime($business_time_end) < strtotime($i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                     continue;
                                 } else {
                                     $opt_html .= '<option value="'.date('H:i', strtotime($i.':'.$j)).'">'.date('H:i', strtotime($i.':'.$j)).'</option>';
                                 }
                             }
                         } else {
-                            if (strtotime(date('H:i', strtotime($business_time_end))) < strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                            if (strtotime($business_time_end) < strtotime($i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                 continue;
                             } else {
                                 $opt_html .= '<option value="'.date('H:i', strtotime($i.':'.$j)).'">'.date('H:i', strtotime($i.':'.$j)).'</option>';
@@ -216,17 +216,17 @@ class HomeController extends Controller
                 for ($i = explode(':', $business_time_start)[0]; $i <= explode(':', $business_time_end)[0]; $i++) {
                     for ($j = 0; $j <= 45; $j+=15) {
                         if ($inputs_date == date('Y-m-d')) {
-                            if (strtotime(date('H:i', strtotime("+".$preparation." minute"))) > strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                            if (strtotime(date('Y-m-d H:i', strtotime("+".$preparation." minute"))) > strtotime($inputs_date.' '.$i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                 continue;
                             } else {
-                                if (strtotime(date('H:i', strtotime($business_time_end))) < strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                                if (strtotime($business_time_end) < strtotime($i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                     continue;
                                 } else {
                                     $opt_html .= '<option value="'.date('H:i', strtotime($i.':'.$j)).'">'.date('H:i', strtotime($i.':'.$j)).'</option>';
                                 }
                             }
                         } else {
-                            if (strtotime(date('H:i', strtotime($business_time_end))) < strtotime(date('H:i', strtotime($i.':'.$j)))) {
+                            if (strtotime($business_time_end) < strtotime($i.':'.$j) || strtotime($business_time_start) > strtotime($i.':'.$j)) {
                                 continue;
                             } else {
                                 $opt_html .= '<option value="'.date('H:i', strtotime($i.':'.$j)).'">'.date('H:i', strtotime($i.':'.$j)).'</option>';
