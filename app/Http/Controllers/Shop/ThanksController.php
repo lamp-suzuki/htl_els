@@ -187,7 +187,7 @@ class ThanksController extends Controller
 
         if ($sub_domain == 'juicys') {
             $hotel_name = 'ホテルエルセラーン大阪';
-        } elseif ($sub_domain == 'juicys-castle') {
+        } elseif ($sub_domain == 'juicys-castle' || $sub_domain == 'mamaindianrestaurant-castle' || $sub_domain == 'kinjyokaku' || $sub_domain == 'kazenomachi-rouge') {
             $hotel_name = '大阪キャッスルホテル';
         } else {
             $hotel_name = 'ホテルエルセラーン大阪';
