@@ -153,7 +153,7 @@ class ThanksController extends Controller
                 'shops_id' => $shops_id,
                 'carts' => json_encode($cart),
                 'service' => $service,
-                'okimochi' => (isset($request['okimochi'])&&$request['okimochi'] != null) ? $request['okimochi'] : 0,
+                'okimochi' => (isset($request['okimochi']) && $request['okimochi'] != null) ? (int)$request['okimochi'] : 0,
                 'shipping' => $shipping,
                 'delivery_time' => $request['delivery_time'],
                 'total_amount' => $total_amount,
