@@ -1,5 +1,7 @@
 @extends('layouts.shop.app')
 
+@section('page_title', 'カート')
+
 @section('content')
 <div class="history-back d-md-none">
   <div class="container">
@@ -95,38 +97,20 @@
       <div class="container">
         <div class="form-group">
           <label for="changeReceive" class="small d-block">お受け取り方法</label>
-          <p class="mb-0">デリバリー(配達)</p>
+          <p>
+            @if(session('receipt.service')==='takeout')
+            お持ち帰り(テイクアウト)
+            @elseif(session('receipt.service')==='delivery')
+            デリバリー(配達)
+            @elseif(session('receipt.service')==='ec')
+            通販(全国配送)
+            @endif
+          </p>
         </div>
         <div class="form-group">
           <label for="changeDeliveryDate" class="small d-block">お受け取り日時</label>
-          <p>{{ date('Y年n月j日', strtotime(session('receipt.date')))}} {{ session('receipt.time') }}</p>
-          {{-- <select id="deliveryDate" class="form-control" name="delivery_date">
-            @for ($i = 0; $i <= 6; $i++)
-            @php
-            if ($manages->delivery_preparation >= (60*24) && $i == 0) {
-                continue;
-            }
-            @endphp
-            <option value="{{ date('Y-m-d', strtotime('+'.$i.' day')) }}" @if(session('receipt.date')===date('Y-m-d', strtotime('+'.$i.' day'))) selected @endif>{{ date('Y年n月j日', strtotime('+'.$i.' day')) }}@if($i == 0)（本日）@elseif($i == 1)（明日）@endif</option>
-            @endfor
-          </select> --}}
+          <p>{{ date('Y年n月j日', strtotime(session('receipt.date'))) }} {{ session('receipt.time') }}</p>
         </div>
-        {{-- <div class="form-group">
-          <select id="changedeliveryTime" class="form-control" name="delivery_time">
-            <option value="{{ session('receipt.time') }}">{{ session('receipt.time') }}</option>
-          </select>
-        </div> --}}
-        @if(session('receipt.service')==='takeout')
-        <div class="form-group">
-          <label for="changeDeliveryDate" class="small d-block">お受け取り店舗</label>
-          <select id="changeDeliveryShop" class="form-control" name="delivery_shop">
-            <option>店舗を選択</option>
-            @foreach ($shops as $shop)
-            <option value="{{ $shop->id }}:{{ $shop->name }}"@if(session('receipt.shop_id') !== null && session('receipt.shop_id') == $shop->id) selected @endif>{{ $shop->name }}</option>
-            @endforeach
-          </select>
-        </div>
-        @endif
       </div>
     </div>
     <div class="cart__option">
@@ -139,8 +123,7 @@
           aria-controls="content-okimochi">
           <span class="d-block container">
             <i data-feather="heart" class="text-primary d-inline-block align-middle mr-2"></i>
-            <span class="d-inline-block align-middle">「{{ $manages->name }}」に応援金を送る</span>
-            <i data-feather="plus-circle" class="position-absolute"></i>
+            <span class="d-inline-block align-middle">応援金を送る</span>
           </span>
         </div>
         <div id="content-okimochi" class="collapse container text-center show" aria-labelledby="head-okimochi"
@@ -181,6 +164,10 @@
               <th>小計</th>
               <td>¥ {{ number_format(session('cart.amount')) }}</td>
             </tr>
+            <tr class="js-cart-amount" data-amount="{{ session('cart.amount') + session('cart.shipping') }}">
+              <th>応援金</th>
+              <td>¥ <span class="js-okimochi-amount">0</span></td>
+            </tr>
             @if (session('cart.shipping') !== 0)
             <tr>
               <th>送料</th>
@@ -191,7 +178,7 @@
           <tfoot>
             <tr>
               <th>合計</th>
-              <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping')) }}</td>
+              <td>¥ <span class="js-cart-total">{{ number_format(session('cart.amount') + session('cart.shipping')) }}</span></td>
             </tr>
           </tfoot>
         </table>
@@ -201,8 +188,11 @@
       <div class="container">
         <div class="d-flex justify-content-center form-btns">
           <a class="btn btn-lg bg-white btn-back mr-2" href="{{ route('shop.home') }}">戻る</a>
-          <button id="submitbtn" class="btn btn-lg btn-primary" type="button" @if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')) || (session('cart.amount') + session('cart.shipping')) <= 0)disabled @endif>注文へ進む</button>
-          {{-- <button class="btn btn-lg btn-primary" type="submit">注文へ進む</button> --}}
+          <button class="btn btn-lg btn-primary" type="submit"
+          @if ((session()->has('cart.vali')) || ($delivery_shipping_min !== null && $delivery_shipping_min > session('cart.amount')) || (session('cart.amount') + session('cart.shipping')) <= 0)
+          disabled
+          @endif
+          >注文へ進む</button>
         </div>
       </div>
     </div>
@@ -213,44 +203,4 @@
   @csrf
   <input type="hidden" name="product_id" value="">
 </form>
-
-<!-- modal -->
-{{-- <div class="modal catalog-modal fsmodal fade" id="signup" tabindex="-1" aria-hidden="true" style="max-width:100%">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body rounded-bottom">
-        <h3 class="text-center">会員ログイン</h3>
-        <div class="text-center">
-          <p class="small">会員登録をしない方はこちらからお進みください。<br>次のページで<b>新規会員登録</b>も可能です。</p>
-          <button class="btn btn-block btn-primary py-3" id="submitbtn">ログインせず注文</button>
-        </div>
-        <hr class="my-4" />
-        <div class="form-group">
-          <label for="" class="small">メールアドレス</label>
-          <input type="email" name="login_email" id="login_email" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="" class="small">パスワード</label>
-          <input type="password" name="login_password" id="login_password" class="form-control" />
-        </div>
-        <div class="mt-4 text-center">
-          <button class="btn btn-dark px-5" type="submit" id="width-login">ログインする</button>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <p class="modal-close" data-dismiss="modal" aria-label="Close">カートに戻る</p>
-      </div>
-    </div>
-  </div>
-</div> --}}
-<!-- .modal -->
-
-<script language="javascript" type="text/javascript">
-  const submitbtn = document.getElementById('submitbtn');
-  // 実行
-  submitbtn.addEventListener('click', (e) => { // 公開
-    e.preventDefault();
-    document.nextform.submit();
-  });
-</script>
 @endsection

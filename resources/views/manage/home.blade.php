@@ -3,7 +3,7 @@
 @section('content')
 <h2 class="page-ttl">トップ</h2>
 <div class="d-lg-flex align-items-start">
-  <div class="content">
+  {{-- <div class="content">
     <div class="content-head">
       <h3>
         <i data-feather="info"></i>
@@ -24,25 +24,8 @@
         <span class="d-block">{{ $title }}</span>
       </a>
     </div>
-  </div>
-  <div class="content">
-    <div class="content-head">
-      <h3>
-        <i data-feather="info"></i>
-        <span>ご注文受け付け設定</span>
-      </h3>
-    </div>
-    <div class="content-body">
-      <form action="{{ route('manage.changehide') }}" method="post">
-        @csrf
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="shop_close" value="0" @if($manages->show_hide === 0) checked @endif>
-          <label class="custom-control-label" for="shop_close">一時的にご注文を受け付けない</label>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="content sales">
+  </div> --}}
+  <div class="content sales w-100">
     <div class="content-head">
       <h3 class="text-center font-weight-bold">
         <span>本日の売上</span>
@@ -63,6 +46,23 @@
     </div>
   </div>
   <!-- .content -->
+  <div class="content">
+    <div class="content-head">
+      <h3>
+        <i data-feather="info"></i>
+        <span>ご注文受け付け設定</span>
+      </h3>
+    </div>
+    <div class="content-body">
+      <form action="{{ route('manage.changehide') }}" method="post">
+        @csrf
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="shop_close" value="0" @if($manages->show_hide === 0) checked @endif>
+          <label class="custom-control-label" for="shop_close">一時的にご注文を受け付けない</label>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="content">
     <div class="content-head">
       <h3>

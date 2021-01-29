@@ -23,14 +23,20 @@ $(function() {
 
   // OnlyTOP
   if (receipt_flag == "on") {
-    $("#FirstSelect").modal({
-      backdrop: 'static'
-    }, "show");
+    $("#FirstSelect").modal(
+      {
+        backdrop: "static"
+      },
+      "show"
+    );
   }
   $("#changeDateBtn .link").on("click", function() {
-    $("#FirstSelect").modal({
-      backdrop: 'static'
-    }, "show");
+    $("#FirstSelect").modal(
+      {
+        backdrop: "static"
+      },
+      "show"
+    );
   });
   $("#salestop").modal("show");
 
@@ -44,6 +50,8 @@ $(function() {
       $("#first-progress .steps").text("2/3");
       $("#first-progress .progress-bar").css("width", "33.33333%");
       $("#first-progress .progress-bar").attr("aria-valuenow", "33.33333");
+
+      vali_select_shop();
     });
   // STEP2
   $("#step2")
@@ -75,6 +83,7 @@ $(function() {
 
   // bootstrap-input-spinner
   $(".num-spinner").inputSpinner();
+  $(".form-control.num-spinner").attr("readonly", true);
 
   // slick
   $(".home-slide").slick({
@@ -120,7 +129,7 @@ $(function() {
   });
   $("#deliveryShop, #changeDeliveryShop").select2({
     theme: "bootstrap4",
-    placeholder: "キーワードで検索"
+    placeholder: "店舗を選択"
   });
 
   // STEP
@@ -137,31 +146,75 @@ $(function() {
   $(".okimochi-btns .btn").on("click", function() {
     $(".okimochi-btns .btn").removeClass("active");
     $(this).addClass("active");
-    $('input#okimochi').val($(this).attr('data-price'));
+    $("input#okimochi").val($(this).attr("data-price"));
+
+    $(".js-okimochi-amount").text(
+      Number($(this).attr("data-price")).toLocaleString()
+    );
+    $(".js-cart-total").text(
+      (
+        Number($(".js-cart-amount").attr("data-amount")) +
+        Number($(this).attr("data-price"))
+      ).toLocaleString()
+    );
   });
   $(".btn-cartdelete").on("click", function() {
     $('#cartdelete input[name="product_id"]').val($(this).attr("data-id"));
     $("#cartdelete").submit();
   });
 
-  $('#width-login').on('click', function() {
-    $('#cartform .seconds').append('<input type="hidden" name="email" value="'+$('#login_email').val()+'" />');
-    $('#cartform .seconds').append('<input type="hidden" name="password" value="'+$('#login_password').val()+'" />');
-    $('#cartform').submit();
+  $("#width-login").on("click", function() {
+    $("#cartform .seconds").append(
+      '<input type="hidden" name="email" value="' +
+        $("#login_email").val() +
+        '" />'
+    );
+    $("#cartform .seconds").append(
+      '<input type="hidden" name="password" value="' +
+        $("#login_password").val() +
+        '" />'
+    );
+    $("#cartform").submit();
   });
 
   // --- form ------------------------------------ //
   // 支払い方法
-  if ($("select#pay").val() == 0 && $("select#pay").val() != '') {
+  if ($("select#pay").val() == 0 && $("select#pay").val() != "") {
     $("#payjp_checkout_box").css("display", "block");
   } else {
     $("#payjp_checkout_box").css("display", "none");
   }
   $("select#pay").on("change", function() {
-    if ($(this).val() == 0 && $(this).val() != '') {
+    if ($(this).val() == 0 && $(this).val() != "") {
       $("#payjp_checkout_box").css("display", "block");
     } else {
       $("#payjp_checkout_box").css("display", "none");
+    }
+  });
+
+  // プレゼント配送
+  if ($('input[name="delivery_purpose"]:checked').val() == "1") {
+    $("#present-form").css("display", "block");
+    $("#present-form .form-control").each(function() {
+      $('input[name="delivery_purpose"]').prop("required", true);
+    });
+  } else {
+    $("#present-form").css("display", "none");
+    $("#present-form .form-control").each(function() {
+      $('input[name="delivery_purpose"]').prop("required", false);
+    });
+  }
+  $('input[name="delivery_purpose"]').on("change", function() {
+    if ($(this).val() == "1") {
+      $("#present-form").css("display", "block");
+      $("#present-form .form-control").each(function() {
+        $(this).prop("required", true);
+      });
+    } else {
+      $("#present-form").css("display", "none");
+      $("#present-form .form-control").each(function() {
+        $(this).prop("required", false);
+      });
     }
   });
 
@@ -173,4 +226,23 @@ $(function() {
       $("#couponSuccess").css("display", "none");
     }
   });
+
+  $(".js-form-submit").on("submit", function() {
+    $(this)
+      .find(".js-one-click")
+      .attr("disabled", true);
+    $(this)
+      .find(".js-one-click")
+      .html(
+        '<span class="d-inline-block mr-2">読込中</span><span class="spinner-border d-inline-block text-light spinner-border-sm" role="status"></span>'
+      );
+  });
 });
+
+function vali_select_shop() {
+  if ($("#FirstSelect #deliveryShop").val() == "") {
+    $("#next-step3").attr("disabled", true);
+  } else {
+    $("#next-step3").attr("disabled", false);
+  }
+}

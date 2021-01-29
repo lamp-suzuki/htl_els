@@ -28,40 +28,37 @@ class BasicController extends Controller
             'name' => 'required',
             'email' => 'required|email',
         ])->validate();
-
-        if ($request['logo'] != null) {
+        if ($request->has('noti_tel') && $request->noti_tel != null && $request->noti_tel != '') {
+            Validator::make($request->all(), [
+                'noti_tel' => 'numeric|digits_between:8,11',
+            ])->validate();
+        }
+        if ($request->hasFile('logo')) {
             $logo = $request->file('logo')->store('public/uploads/logo');
             $logo = str_replace('public', 'storage', $logo);
         } else {
-            if ($request->has('logo_flag') && $request['logo'] == null) {
-                $logo = $manage->logo;
-            }
+            $logo = $manage->logo;
         }
-
         try {
-            DB::table('manages')->where('id', $request['manage_id'])->update([
+            DB::table('manages')->where('id', $manage->id)->update([
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'tel' => $request['tel'],
                 'fax' => $request['fax'],
                 'description' => $request['description'],
-                'logo' => isset($request['logo']) ? $logo : null,
+                'logo' => $logo,
                 'genres_id' => $request['genres_id'],
-                'default_tax' => $request['default_tax'],
-                'takeout_flag' => isset($request['takeout_flag']) ? 1 : 0,
-                'delivery_flag' => isset($request['delivery_flag']) ? 1 : 0,
-                'ec_flag' => isset($request['ec_flag']) ? 1 : 0,
-                'point_flag' => $request['point_flag'],
+                'takeout_flag' => 0,
+                'delivery_flag' => 1,
+                'ec_flag' => 0,
                 'default_stock' => (int)$request['default_stock'],
-                'alcohol_flag' => $request['alcohol_flag'],
-                'facebook_url' => $request['facebook_url'],
-                'twitter_url' => $request['twitter_url'],
-                'instagram_url' => $request['instagram_url'],
                 'updated_at' => now(),
+                'noti_tel' => isset($request['noti_tel']) && $request['noti_tel'] != '' && $request['noti_tel'] != null ? $request['noti_tel'] : null,
+                'noti_start_time' => isset($request['noti_start_time']) && $request['noti_start_time'] != '' && $request['noti_start_time'] != null ? date('H:i:s', strtotime($request['noti_start_time'])) : null,
+                'noti_end_time' => isset($request['noti_end_time']) && $request['noti_end_time'] != '' && $request['noti_end_time'] != null ? date('H:i:s', strtotime($request['noti_end_time'])) : null,
             ]);
             session()->flash('message', '更新されました。');
         } catch (\Throwable $th) {
-            dd($th);
             session()->flash('error', 'エラーが発生しました。');
         }
         return redirect()->route('manage.setting.basic');

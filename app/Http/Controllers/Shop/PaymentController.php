@@ -49,8 +49,6 @@ class PaymentController extends Controller
             $request->session()->put('form_order', $request->all());
         }
 
-        // dd($points);
-
         return view('shop.payment', [
             'point_flag' => $point_flag,
             'points' => $points,

@@ -33,6 +33,8 @@
           </select>
           <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
             data-key="pk_live_0b8df682f4f36a822c731300" data-submit-text="適用して閉じる" data-partial="true"></script>
+          {{-- <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button"
+            data-key="pk_test_a0727685f74f89262de1a310" data-submit-text="適用して閉じる" data-partial="true"></script> --}}
         </div>
       </div>
     </div>
@@ -79,12 +81,6 @@
               <th>合計</th>
               <td>¥ {{ number_format(session('cart.amount') + session('cart.shipping') + session('cart.okimochi')) }}</td>
             </tr>
-            @if ($point_flag)
-            <tr class="small">
-              <th>獲得ポイント</th>
-              <td>{{ number_format(floor(session('cart.amount')*0.01)) }}pt</td>
-            </tr>
-            @endif
           </tfoot>
         </table>
       </div>

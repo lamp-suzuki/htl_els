@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<form class="pc-two" action="{{ route('shop.thanks') }}" method="post">
+<form class="pc-two js-form-submit" action="{{ route('shop.thanks') }}" method="post">
   <div>
     @csrf
     <div class="py-4">
@@ -214,7 +214,7 @@
       <div class="container">
         <div class="d-flex justify-content-center form-btns">
           <a class="btn btn-lg bg-white btn-back mr-2" href="{{ route('shop.payment') }}">戻る</a>
-          <button class="btn btn-lg btn-primary" type="submit">注文を確定する</button>
+          <button class="btn btn-lg btn-primary js-one-click" type="submit">注文を確定する</button>
         </div>
       </div>
     </div>

@@ -17,9 +17,14 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $request->session()->put('form_cart', $request->all());
+        if ($_SERVER["REQUEST_METHOD"] != 'GET') {
+            $request->session()->put('form_cart', $request->input());
+        }
+
         if ($request['okimochi'] != 0) {
             session()->put('cart.okimochi', (int)$request['okimochi']);
+        } elseif ($request['okimochi'] == 0) {
+            session()->put('cart.okimochi', 0);
         }
 
         if ($request->has('email') && $request->has('password')) {

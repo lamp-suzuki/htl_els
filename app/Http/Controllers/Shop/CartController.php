@@ -91,7 +91,7 @@ class CartController extends Controller
     // カート商品削除
     public function delete(Request $request)
     {
-        $target = session('cart.products')[(int)$request['product_id']];
+        $target = session('cart.products.'.(int)$request['product_id']);
         $product = DB::table('products')->find($target['id']);
         $price = $product->price;
         if (is_array($target['options'])) {
@@ -100,6 +100,7 @@ class CartController extends Controller
                 $price += $opt_temp->price;
             }
         }
+        $price *= $target['quantity'];
         $request->session()->put('cart.amount', session('cart.amount') - $price);
         $request->session()->put('cart.total', session('cart.total') - 1);
 
@@ -121,7 +122,6 @@ class CartController extends Controller
     public function cart_vali()
     {
         $service = session('receipt.service');
-        $cart_products = [];
         $cart_products = session('cart.products');
         foreach ($cart_products as $key => $product) {
             $flag = DB::table('products')->find($product['id']);

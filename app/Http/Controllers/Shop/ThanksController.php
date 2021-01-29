@@ -5,15 +5,14 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderThanks;
 use App\Mail\OrderAdmin;
 use App\Mail\OrderFax;
-use App\Mail\CreateUser;
+
+use Twilio\Rest\Client; // Twilio
 
 class ThanksController extends Controller
 {
@@ -44,6 +43,7 @@ class ThanksController extends Controller
         $i = 0;
         $cart = [];
         $thumbnails = [];
+        $data_total_amount = 0;
         while ($request->has('cart_'.$i.'_id')) {
             $options = [];
             $option_data = [];
@@ -56,21 +56,24 @@ class ThanksController extends Controller
                     }
                 }
             }
+            $data_product = DB::table('products')->find($request['cart_'.$i.'_id']);
             $cart[] = [
                 'product_id' => $request['cart_'.$i.'_id'],
+                'product_name' => $data_product->name,
+                'product_price' => $data_product->price,
                 'quantity' => $request['cart_'.$i.'_quantity'],
                 'options' => $options,
+                'option_data' => $option_data,
             ];
-            $data_product = DB::table('products')->find($request['cart_'.$i.'_id']);
             $thumbnails[] = $data_product->thumbnail_1;
             $data_price = 0;
             if (count($option_data) > 0) {
                 foreach ($option_data as $o_data) {
-                    $data_price += ($data_product->price + $o_data[1]) * (int)$request['cart_'.$i.'_quantity'];
+                    $data_price += $o_data[1] * (int)$request['cart_'.$i.'_quantity'];
                 }
-            } else {
-                $data_price += $data_product->price;
             }
+            $data_price += $data_product->price * (int)$request['cart_'.$i.'_quantity'];
+            $data_total_amount += $data_price;
 
             $data['carts'][] = [
                 'name' => $data_product->name,
@@ -90,19 +93,21 @@ class ThanksController extends Controller
             $shops_id = $shop_info->id;
             $shop_fax = $shop_info->fax;
             $shop_email = $shop_info->email;
+            $twiml_shop = $shop_info->name;
         } else {
             $temp_shops = DB::table('shops')->where('manages_id', $manages->id)->first();
             $shop_info = null;
             $shops_id = $temp_shops->id;
             $shop_fax = $temp_shops->fax;
             $shop_email = $temp_shops->email;
+            $twiml_shop = null;
         }
 
         // 最終金額計算
-        $total_amount = $request['total_amount'] + (int)session('cart.shipping');
-        if ((int)session('form_payment.use_points') !== 0) {
-            $total_amount -= (int)session('form_payment.use_points');
+        $total_amount = (int)($data_total_amount + (int)session('cart.shipping') + (int)$request['okimochi']);
+        if ((int)session('form_payment.use_points') > 0) {
             $use_points = (int)session('form_payment.use_points');
+            $total_amount -= $use_points;
         } else {
             $use_points = 0;
         }
@@ -119,6 +124,7 @@ class ThanksController extends Controller
         // 決済処理
         if (session('form_payment.pay') == 0) {
             if (session('form_payment.payjp-token') != null) {
+                // \Payjp\Payjp::setApiKey('sk_test_0b5384bfababd3af6117d2fc');
                 \Payjp\Payjp::setApiKey('sk_live_5963e853c01db0b226dea143951c11ffd40be055415d2ec5ea068ae5');
                 try {
                     $charge = \Payjp\Charge::create(array(
@@ -218,6 +224,47 @@ class ThanksController extends Controller
         // セッション削除
         $request->session()->forget(['form_payment', 'form_cart', 'form_order', 'receipt', 'cart']);
         $request->session()->regenerateToken();
+
+        // 電話の通知
+        if ($manages->noti_tel != null) { // 電話番号があれば
+            $tel_noti_flag = true;
+            if ($manages->noti_start_time != null && $manages->noti_end_time != null) {
+                if (strtotime($manages->noti_start_time) <= strtotime(date('H:i:s')) && strtotime($manages->noti_end_time) >= strtotime(date('H:i:s'))) {
+                    $tel_noti_flag = true; // 指定の時間内
+                } else {
+                    $tel_noti_flag = false; // 指定の時間外
+                }
+            }
+        } else {
+            $tel_noti_flag = false;
+        }
+        if ($tel_noti_flag && ($services == 'takeout' || $services == 'delivery')) {
+            $twiml = '<Response><Say language="ja-jp">こんにちは、テイクイーツです。';
+            $twiml .= $request['furigana'].'様より';
+            if ($twiml_shop != null) {
+                $twiml .= $twiml_shop.'へ';
+            }
+            $twiml .= $service.'のご注文がございます。';
+            $twiml .= '</Say></Response>';
+            $sid = config("app.twilio_sid");
+            $token = config("app.twilio_token");
+            try {
+                $twilio = new Client($sid, $token);
+                $call = $twilio->calls
+                    ->create(
+                        toInternational($manages->noti_tel), // to
+                        config("app.twilio_from"), // from
+                        [
+                            'phoneNumberSid' => config('app.twilio_phone_sid'),
+                            'voice' => 'alice',
+                            'language' => 'ja-JP',
+                            'timeout' => 30,
+                            'twiml' => $twiml,
+                        ]
+                    );
+            } catch (\Throwable $th) {
+            }
+        }
 
         // メール送信
         // お客様

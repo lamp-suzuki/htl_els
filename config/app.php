@@ -123,6 +123,12 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+
+    'twilio_sid' => env('TWILIO_SID'),
+    'twilio_token' => env('TWILIO_TOKEN'),
+    'twilio_from' => env('TWILIO_FROM'),
+    'twilio_phone_sid' => env('TWILIO_FROM_SID'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

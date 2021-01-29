@@ -43,6 +43,16 @@
     <input type="tel" class="form-control" id="tel" name="tel" value="{{ $manage->tel }}" required />
   </div>
   <div class="form-group">
+    <label for="noti_tel">電話番号（注文通知用）</label>
+    <input type="tel" class="form-control" id="noti_tel" name="noti_tel" value="{{ $manage->noti_tel }}" placeholder="ハイフンなし半角数字のみ" />
+    <div class="form-inline my-2">
+      <input type="time" class="form-control form-control-sm w-auto" name="noti_start_time" min="00:00" max="23:59" value="{{ $manage->noti_start_time != null ? date('H:i', strtotime($manage->noti_start_time)) : '' }}" />
+      <span class="mx-2">〜</span>
+      <input type="time" class="form-control form-control-sm w-auto" name="noti_end_time" min="00:00" max="23:59" value="{{ $manage->noti_end_time != null ? date('H:i', strtotime($manage->noti_end_time)) : '' }}" />
+    </div>
+    <small class="d-block form-text text-muted">※電話通知を受ける時間帯を記入ください。上記の時間以外では電話での通知が来なくなります。</small>
+  </div>
+  <div class="form-group">
     <label for="fax">FAX（通知用）</label>
     <input type="tel" class="form-control" id="fax" name="fax" value="{{ $manage->fax }}" />
   </div>
@@ -71,14 +81,14 @@
       @endforeach
     </select>
   </div>
-  <div class="form-group">
+  <div class="form-group d-none">
     <label for="default_tax">デフォルト税率</label>
     <select name="default_tax" class="form-control" id="default_tax">
       <option value="8" @if (8===$manage->default_tax) selected @endif>8%</option>
       <option value="10" @if (10===$manage->default_tax) selected @endif>10%</option>
     </select>
   </div>
-  <div class="form-group">
+  <div class="form-group d-none">
     <label for="takeout_flag">対応サービス</label>
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="1" name="takeout_flag" id="takeout_flag" @if(1===$manage->takeout_flag) checked @endif/>
@@ -94,7 +104,7 @@
       <label class="form-check-label text-body" for="ec_flag">お取り寄せ</label>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group d-none">
     <label for="">ポイント発行</label>
     <div class="form-check">
       <input class="form-check-input" type="radio" name="point_flag" id="point_flag_false" value="0" id="" @if(0===$manage->point_flag) checked @endif/>
@@ -110,7 +120,7 @@
     <input type="number" class="form-control w-auto" min="0" max="99999" name="default_stock" id="default_stock"
       value="{{ $manage->default_stock }}" required />
   </div>
-  <div class="form-group d-none">
+  {{-- <div class="form-group d-none">
     <label for="">サイト内でお酒を販売しますか？</label>
     <div class="form-check">
       <input class="form-check-input" type="radio" name="alcohol_flag" id="alcoholFlagTrue" value="0" id="" @if(0===$manage->alcohol_flag) checked @endif/>
@@ -120,8 +130,8 @@
       <input class="form-check-input" type="radio" name="alcohol_flag" id="alcoholFlagFalse" value="1" id="" @if(1===$manage->alcohol_flag) checked @endif/>
       <label class="form-check-label text-body" for="alcoholFlagFalse">販売する</label>
     </div>
-  </div>
-  <h3 class="font-weight-bold h5 mb-3 mt-4">SNSについて</h3>
+  </div> --}}
+  {{-- <h3 class="font-weight-bold h5 mb-3 mt-4">SNSについて</h3>
   <div class="form-group row align-items-center mx-0">
     <label for="facebook" class="col-3 m-0 px-0">Facebook</label>
     <div class="col-9 px-0">
@@ -139,8 +149,8 @@
     <div class="col-9 px-0">
       <input type="text" name="instagram_url" class="form-control" id="instagram" value="{{ $manage->instagram }}" />
     </div>
-  </div>
-  <h3 class="font-weight-bold h5 mb-3 mt-4">振込口座について</h3>
+  </div> --}}
+  {{-- <h3 class="font-weight-bold h5 mb-3 mt-4">振込口座について</h3>
   <div class="form-group">
     <label for="account_holder">振込先の口座名義</label>
     <input type="text" class="form-control" id="account_holder" name="account_holder" />
@@ -164,7 +174,7 @@
   <div class="form-group">
     <label for="account_number">口座番号</label>
     <input type="text" class="form-control" id="account_number" name="account_number" />
-  </div>
+  </div> --}}
   <div class="mt-4 text-center">
     <button type="submit" class="btn btn-success text-white px-5">更新する</button>
   </div>
