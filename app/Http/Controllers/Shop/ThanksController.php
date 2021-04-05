@@ -277,7 +277,7 @@ class ThanksController extends Controller
 
         // 店舗様
         $even_more_bcc = [ // bcc
-            'booking@lino-a.com'
+            'booking@hineli.jp'
         ];
         if ($shop_email != null && $shop_email != '') {
             $even_more_bcc[] = $shop_email;
